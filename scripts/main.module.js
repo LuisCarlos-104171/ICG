@@ -15,7 +15,7 @@ function run() {
 
     const models = [
         ["models/spaceship.gltf", "spaceship"],
-        ["models/asteroid01.glb", "asteroid01"]
+        ["models/asteroid01.gltf", "asteroid01"]
     ];
 
     const loader = new GLTFLoader();
@@ -28,12 +28,13 @@ function run() {
     Promise.all(promises).then((results) => {
         results.forEach(result => {
             Models[result.name] = result.scene;
+            console.log(result.scene)
         });
 
         // instance creators
-        const gunLeft = new Gun(camera, window, new THREE.Vector3(-10, -6, -10));
-        const gunRight = new Gun(camera, window, new THREE.Vector3(10, -6, -10));
-        const asteroidField = new AsteroidField(camera, window);
+        new Gun(camera, window, new THREE.Vector3(-5, -6, -10), new THREE.Vector3(0, 0, -500));
+        new Gun(camera, window, new THREE.Vector3(5, -6, -10), new THREE.Vector3(0, 0, -500));
+        new AsteroidField(camera, window);
 
         let cube = new primitives.Cube(100, new THREE.Vector3(0, 0, -30), 10, 0xff0000, 130, true, false);
         window.addObject(cube);

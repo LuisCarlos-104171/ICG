@@ -15,7 +15,7 @@ export default class Player extends Input {
         this.acceleration = new THREE.Vector3(0, 0, 0);
 
         this.Cr = 1;
-        this.mass = 5;
+        this.mass = 100;
 
         this.rotation = new THREE.Quaternion();
         this.collider = null;
@@ -59,8 +59,8 @@ export default class Player extends Input {
             yAxis = -1;
         }
 
-        movement.normalize().multiplyScalar(200).applyQuaternion(this.rotation);
-        movement.y = yAxis * 100;
+        movement.normalize().multiplyScalar(4000).applyQuaternion(this.rotation);
+        movement.y = yAxis * 2000;
         this.addForce(movement);
 
         // friction
@@ -80,5 +80,9 @@ export default class Player extends Input {
         document.getElementById("playerAccelerationX").innerText = "X: " + (Math.round(this.acceleration.x * 10) / 10).toString();
         document.getElementById("playerAccelerationY").innerText = "Y: " + (Math.round(this.acceleration.y * 10) / 10).toString();
         document.getElementById("playerAccelerationZ").innerText = "Z: " + (Math.round(this.acceleration.z * 10) / 10).toString();
+    }
+
+    takeDamage(damage) {
+        console.log("Player took " + damage + " damage!");
     }
 }

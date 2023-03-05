@@ -7,7 +7,7 @@ export default class Bullet extends Body {
     constructor(position, size, color, initialForce, scene) {
         super(new THREE.Vector3(size, size, size), 0.01, position);
 
-        this.applyForce(initialForce);
+        this.velocity = initialForce.clone();
 
         this.gfx = new THREE.Mesh(
             new THREE.BoxGeometry(size, size, size),
@@ -33,6 +33,6 @@ export default class Bullet extends Body {
         this.scene.remove(this.gfx);
         super.destroy();
         this.collider.destroy();
-        return true;
+        return false;
     }
 }

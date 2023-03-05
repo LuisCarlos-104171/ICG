@@ -6,7 +6,7 @@ function calculateMinMax(object, scale = new THREE.Vector3(1, 1, 1)) {
     let currentMin = new THREE.Vector3(Infinity, Infinity, Infinity);
     let currentMax = new THREE.Vector3(-Infinity, -Infinity, -Infinity);
 
-    if (object instanceof THREE.Mesh) {
+    if (object instanceof THREE.Mesh && object.visible) {
         let geo = object.geometry;
         geo.computeBoundingBox();
         let min = geo.boundingBox.min.clone().multiply(object.scale.clone().multiply(scale));
@@ -73,12 +73,12 @@ export default class MeshCollider {
             this.raycaster.set(center1, center2.sub(center1).normalize());
             let intersection = this.raycaster.intersectObjects([this.mesh, other.mesh]);
             for (const i of intersection) {
-                if (this.meshChildren.includes(i.object)) {
+                if (this.meshChildren.includes(i.object) || other.meshChildren.includes(i.object)) {
                     intersection.splice(intersection.indexOf(i), 1);
                 }
             }
 
-            return intersection.length > 0 && intersection[0].distance < center1.distanceTo(center2);
+            return intersection.length > 0 && intersection[0].distance <= center1.distanceTo(center2);
         }
         return false;
     }
@@ -89,16 +89,18 @@ export default class MeshCollider {
 
     static processCollisions() {
         for (const collider of MeshCollider.colliders.allColliders) {
-            const { min, max } = calculateMinMax(collider.mesh);
+            if (collider.obj.position.distanceTo(collider.previousPosition) > 0.001) {
+                collider.previousPosition = collider.obj.position.clone();
+                const { min, max } = calculateMinMax(collider.mesh);
 
-            collider.box.set(min.clone().add(collider.obj.position), max.clone().add(collider.obj.position));
-            this.min = min;
-            this.max = max;
+                collider.box.set(min.clone().add(collider.obj.position), max.clone().add(collider.obj.position));
+                this.min = min;
+                this.max = max;
 
-            if (collider.recalculate) {
-                MeshCollider.colliders.remove(collider);
-                MeshCollider.colliders.register(collider);
-                collider.recalculate = false;
+                if (collider.recalculate) {
+                    MeshCollider.colliders.remove(collider);
+                    MeshCollider.colliders.register(collider);
+                }
             }
         }
 
@@ -129,8 +131,8 @@ export default class MeshCollider {
             let mb = b.obj.mass;
 
             const constant = ua.clone().multiplyScalar(ma).add(ub.clone().multiplyScalar(mb));
-            const ub_ua = ub.clone().sub(ua).multiplyScalar(b.obj.Cr * mb);
-            const ua_ub = ua.clone().sub(ub).multiplyScalar(a.obj.Cr * ma);
+            const ub_ua = ub.clone().sub(ua).multiplyScalar(a.obj.Cr * mb);
+            const ua_ub = ua.clone().sub(ub).multiplyScalar(b.obj.Cr * ma);
 
             let va = constant.clone().add(ub_ua).divideScalar(ma + mb);
             let vb = constant.clone().add(ua_ub).divideScalar(ma + mb);
@@ -148,12 +150,7 @@ export default class MeshCollider {
             }
         }
 
-        for (const collider of MeshCollider.colliders.allColliders) {
-            if (collider.obj.position.distanceTo(collider.previousPosition) > 0.001) {
-                collider.previousPosition = collider.obj.position.clone();
-                collider.recalculate = true;
-            }
-        }
+
     }
 
     static debug(scene) {

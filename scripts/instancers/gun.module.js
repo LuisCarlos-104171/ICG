@@ -4,14 +4,16 @@ import Input from "../input/input.module.js";
 
 
 export default class Gun extends Input {
-    constructor(player, window, throwPoint) {
+    constructor(player, window, throwPoint, throwForce) {
         super();
         this.win = window;
         this.player = player;
         this.interval = null;
         this.throwPoint = throwPoint;
+        this.throwForce = throwForce;
         this.shooting = false;
         this.sum = 0;
+        this.reloadTime = 0.1;
     }
 
     update(event, data) {
@@ -21,14 +23,15 @@ export default class Gun extends Input {
 
         if (event === "mouseup" && data.button === 0) {
             this.shooting = false;
+            this.sum = 0;
         }
     }
 
     tick(delta) {
         if (this.shooting) {
             this.sum += delta;
-            if (this.sum > 0.1) {
-                this.sum -= 0.1;
+            if (this.sum >= this.reloadTime) {
+                this.sum = 0;
                 this.shoot();
             }
         }
@@ -37,11 +40,12 @@ export default class Gun extends Input {
     shoot() {
         let bullet = new Bullet(
             this.player.gfx.localToWorld(this.throwPoint.clone()),
-            0.5,
+            1,
             0xff0000,
-            this.player.gfx.localToWorld(new THREE.Vector3(0, 0, -500)).sub(this.player.position),
+            this.player.gfx.localToWorld(this.throwForce.clone()).sub(this.player.gfx.localToWorld(this.throwPoint.clone())),
             this.win.scene
         );
+        console.log(this.player.gfx.localToWorld(this.throwPoint.clone()), this.throwForce)
         this.win.addObject(bullet);
     }
 }

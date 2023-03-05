@@ -5,6 +5,7 @@ import Constants from "./constants.module.js";
 
 export default class Body {
     static bodies = [];
+    static idCounter = 0;
 
     static update(delta) {
         Body.bodies.forEach(body => body.update(delta));
@@ -21,6 +22,7 @@ export default class Body {
         Body.bodies.push(this);
 
         this.mass = mass;
+        this.id = Body.idCounter++;
     }
 
     applyForce(force) {
@@ -36,6 +38,6 @@ export default class Body {
     }
 
     destroy() {
-        Body.bodies.splice(Body.bodies.indexOf(this), 1);
+        Body.bodies = Body.bodies.filter(body => body.id !== this.id);
     }
 }
