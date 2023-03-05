@@ -2,6 +2,7 @@ import * as THREE from 'three';
 import Input from "./input/input.module.js";
 import Body from "./body.module.js";
 import MeshCollider from "./colliders/meshCollider.module.js";
+import PauseControl from "./pauseControl.module.js";
 
 export default class Window {
     constructor(camera) {
@@ -14,15 +15,18 @@ export default class Window {
         this.camera = camera.camera;
         this.scene.add(camera.skybox);
         this.addObject(camera);
+
+        this.pause = new PauseControl();
     }
 
+    get paused() {
+        return this.pause.paused;
+    }
     addObject(object) {
         this.scene.add(object.gfx);
     }
 
     tick(delta) {
-        this.counter++;
-
         // update inputs
         Input.update(delta);
 

@@ -6,6 +6,7 @@ import primitives from './primitives/primitives.module.js';
 import Gun from "./instancers/gun.module.js";
 import AsteroidField from "./instancers/asteroidField.module.js";
 import Models from "./models.module.js";
+import Sounds from "./sounds/sounds.module.js";
 
 function run() {
     const camera = new Camera();
@@ -18,17 +19,33 @@ function run() {
         ["models/asteroid01.gltf", "asteroid01"]
     ];
 
+    const sounds = [
+        ["sounds/shooting.wav", "shot"],
+        ["sounds/explosion.wav", "explosion"]
+    ];
+
     const loader = new GLTFLoader();
-    const promises = models.map(([model, name]) => new Promise((resolve, _) => {
+    const soundLoader = new THREE.AudioLoader();
+
+    let promises = models.map(([model, name]) => new Promise((resolve, _) => {
         loader.load(model, (gltf) => {
-            resolve({scene: gltf.scene, name: name});
+            resolve({type: "model", scene: gltf.scene, name: name});
         });
     }));
 
+    promises = promises.concat(sounds.map(([sound, name]) => new Promise((resolve, _) => {
+        soundLoader.load(sound, buffer => {
+            resolve({type: "sound", sound: buffer, name: name});
+        });
+    })));
+
     Promise.all(promises).then((results) => {
         results.forEach(result => {
-            Models[result.name] = result.scene;
-            console.log(result.scene)
+            if (result.type === "sound") {
+                Sounds[result.name] = result.sound;
+            } else {
+                Models[result.name] = result.scene;
+            }
         });
 
         // instance creators
@@ -53,6 +70,10 @@ function run() {
 
         const delta = Date.now() - start;
         start = Date.now();
+
+        if (window.paused) {
+            return;
+        }
         window.tick(delta / 1000);
         window.render();
     }

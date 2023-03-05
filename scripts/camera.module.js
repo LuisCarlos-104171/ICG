@@ -5,6 +5,8 @@ import Models from "./models.module.js";
 
 
 export default class Camera extends Player {
+    static audioListener = null;
+
     constructor() {
         super();
         this.skybox = new THREE.Mesh(
@@ -75,6 +77,10 @@ export default class Camera extends Player {
 
         if (event === "mouseclick") {
             Input.requestPointerLock();
+            if (!Camera.audioListener) {
+                Camera.audioListener = new THREE.AudioListener();
+                this.camera.add(Camera.audioListener);
+            }
         }
 
         if (event === "mousemove") {

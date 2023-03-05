@@ -4,6 +4,7 @@ import MeshCollider from "../colliders/meshCollider.module.js";
 import Bullet from "./bullet.module.js";
 import Models from "../models.module.js";
 import Player from "../entities/player.module.js";
+import SoundFX from "../sounds/soundFX.module.js";
 
 
 export default class Asteroid extends Body {
@@ -41,6 +42,7 @@ export default class Asteroid extends Body {
             this.gfx.position.set(this.position.x, this.position.y, this.position.z);
         } else {
             if (this.animationCurrentTime === 0) {
+                new SoundFX("explosion", 0.8).play()
                 this.collider.destroy();
                 this.destructionBodies = this.pieces.map(piece => new Body(new THREE.Vector3(1, 1, 1), 1, piece.position.add(this.position)));
                 this.destructionBodies.forEach(body => body.velocity = new THREE.Vector3(Math.random() * 2 - 1, Math.random() * 2 - 1, Math.random() * 2 - 1).multiplyScalar(40));

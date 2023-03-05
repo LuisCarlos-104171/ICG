@@ -10,35 +10,29 @@
     <title>ICG - Final Project</title>
 </head>
 <body>
-    <div class="UI">
-        <div class="dropdown">
-            <input class="dropdown-toggle" type="checkbox" id="flocking" style="display: none" checked>
-            <label for="flocking" class="dropdown-label">Stats</label>
-            <div class="dropdown-content">
-                <div class="dropdown">
-                    <input class="dropdown-toggle" type="checkbox" id="flocking-params" style="display: none" checked>
-                    <label for="flocking-params" class="dropdown-label">Player</label>
-                    <div class="dropdown-content">
-                        <h1>Position</h1>
-                        <div class="input-group">
-                            <p id="playerPositionX">X: </p>
-                            <p id="playerPositionY">Y: </p>
-                            <p id="playerPositionZ">Z: </p>
-                        </div>
-                        <h1>Velocity</h1>
-                        <div class="input-group">
-                            <p id="playerVelocityX">X: </p>
-                            <p id="playerVelocityY">Y: </p>
-                            <p id="playerVelocityZ">Z: </p>
-                        </div>
-                        <h1>Acceleration</h1>
-                        <div class="input-group">
-                            <p id="playerAccelerationX">X: </p>
-                            <p id="playerAccelerationY">Y: </p>
-                            <p id="playerAccelerationZ">Z: </p>
-                        </div>
-                    </div>
-                </div>
+    <div id="UI">
+        <div id="pause_controls">
+            <h1>Game Paused!</h1>
+        </div>
+
+        <div class="speedometer">
+            <div class="group">
+                <h1>Position</h1>
+                <p class="group_x" id="playerPositionX">0</p>
+                <p class="group_y" id="playerPositionY">0</p>
+                <p class="group_z" id="playerPositionZ">0</p>
+            </div>
+            <div class="group">
+                <h1>Velocity</h1>
+                <p class="group_x" id="playerVelocityX">0</p>
+                <p class="group_y" id="playerVelocityY">0</p>
+                <p class="group_z" id="playerVelocityZ">0</p>
+            </div>
+            <div class="group">
+                <h1>Acceleration</h1>
+                <p class="group_x" id="playerAccelerationX">0</p>
+                <p class="group_y" id="playerAccelerationY">0</p>
+                <p class="group_z" id="playerAccelerationZ">0</p>
             </div>
         </div>
     </div>

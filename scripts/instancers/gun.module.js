@@ -1,7 +1,6 @@
-import * as THREE from "three";
 import Bullet from "../primitives/bullet.module.js";
 import Input from "../input/input.module.js";
-
+import SoundFX from "../sounds/soundFX.module.js";
 
 export default class Gun extends Input {
     constructor(player, window, throwPoint, throwForce) {
@@ -38,6 +37,8 @@ export default class Gun extends Input {
     }
 
     shoot() {
+        new SoundFX("shot").play();
+
         let bullet = new Bullet(
             this.player.gfx.localToWorld(this.throwPoint.clone()),
             1,
@@ -45,7 +46,6 @@ export default class Gun extends Input {
             this.player.gfx.localToWorld(this.throwForce.clone()).sub(this.player.gfx.localToWorld(this.throwPoint.clone())),
             this.win.scene
         );
-        console.log(this.player.gfx.localToWorld(this.throwPoint.clone()), this.throwForce)
         this.win.addObject(bullet);
     }
 }
