@@ -24,7 +24,7 @@ export default class Asteroid extends Body {
             }
         }
 
-        this.health = 10;
+        this.health = 100;
         this.dead = false;
 
         this.gfx.position.set(position.x, position.y, position.z);
@@ -34,12 +34,15 @@ export default class Asteroid extends Body {
         this.animationMaxTime = 3.5;
         this.animationCurrentTime = 0;
         this.destructionBodies = [];
+
+        this.invulnerable = false;
     }
 
     update(delta) {
         if (!this.dead) {
             super.update(delta);
             this.gfx.position.set(this.position.x, this.position.y, this.position.z);
+            this.invulnerable = false;
         } else {
             if (this.animationCurrentTime === 0) {
                 new SoundFX("explosion", 0.8).play()
@@ -70,6 +73,9 @@ export default class Asteroid extends Body {
     }
 
     takeDamage(amt) {
+        if (this.invulnerable) return;
+        this.invulnerable = true;
+
         this.health -= amt;
         if (this.health <= 0) {
             this.dead = true;
@@ -78,7 +84,7 @@ export default class Asteroid extends Body {
 
     onCollision(other) {
         if (other.obj instanceof Bullet) {
-            this.takeDamage(2);
+            this.takeDamage(1);
         } else if (other.obj instanceof Player) {
             this.takeDamage(4);
             other.obj.takeDamage(1)

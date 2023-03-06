@@ -50,6 +50,9 @@ function run() {
             }
         });
 
+        document.getElementById("loading_screen").style.opacity = "0";
+        document.getElementById("loading_screen").style.pointerEvents = "auto";
+
         // instance creators
         new Gun(camera, window, new THREE.Vector3(-5, -6, -3), new THREE.Vector3(0, 0, -500));
         new Gun(camera, window, new THREE.Vector3(5, -6, -3), new THREE.Vector3(0, 0, -500));
