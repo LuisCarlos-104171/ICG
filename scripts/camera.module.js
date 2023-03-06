@@ -27,10 +27,13 @@ export default class Camera extends Player {
         this.gfx.add(this.thirdPersonCamera);
 
         this.firstPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.firstPersonCamera.position.set(0, 0.5, -3);
+        this.firstPersonCamera.position.set(0, 0.4, -3);
+        this.firstPersonCameraDesire = new THREE.Vector3(0, 0.4, -3);
+        this.firstPersonCameraDefault = new THREE.Vector3(0, 0.4, -3);
         this.gfx.add(this.firstPersonCamera);
 
         this.camera = this.thirdPersonCamera;
+        this.speedometer = document.getElementById("speedometer");
 
         this.prev = { x: 0, y: 0 };
     }
@@ -94,12 +97,18 @@ export default class Camera extends Player {
         if (event === "keydown" && data.key === "1") {
             if (this.camera !== this.thirdPersonCamera) {
                 this.camera = this.thirdPersonCamera;
+                this.speedometer.style.left = "0";
+                this.speedometer.style.bottom = "10%";
+                this.speedometer.style.transform = "translate(0, 0)";
             }
         }
 
         if (event === "keydown" && data.key === "2") {
             if (this.camera !== this.firstPersonCamera) {
                 this.camera = this.firstPersonCamera;
+                this.speedometer.style.left = "50%";
+                this.speedometer.style.bottom = "20%";
+                this.speedometer.style.transform = "translate(-50%, 0)";
             }
         }
 
@@ -115,6 +124,15 @@ export default class Camera extends Player {
 
     tick(delta) {
         super.tick(delta);
+
+        if (this.movement.length() > 0) {
+            const move = this.movement.clone().divideScalar(4000).multiplyScalar(0.3).add(this.firstPersonCameraDefault);
+            this.firstPersonCameraDesire = new THREE.Vector3(move.x, this.yAxis * 0.07 + this.firstPersonCameraDefault.y, move.z);
+        } else {
+            this.firstPersonCameraDesire = this.firstPersonCameraDefault;
+        }
+
+        this.firstPersonCamera.position.lerp(this.firstPersonCameraDesire, delta);
 
         this.gfx.position.x = this.position.x;
         this.gfx.position.y = this.position.y;
