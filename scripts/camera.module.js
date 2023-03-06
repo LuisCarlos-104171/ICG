@@ -27,9 +27,9 @@ export default class Camera extends Player {
         this.gfx.add(this.thirdPersonCamera);
 
         this.firstPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.firstPersonCamera.position.set(0, 0.4, -3);
-        this.firstPersonCameraDesire = new THREE.Vector3(0, 0.4, -3);
-        this.firstPersonCameraDefault = new THREE.Vector3(0, 0.4, -3);
+        this.firstPersonCamera.position.set(0, 0.5, -2.5);
+        this.firstPersonCameraDesire = new THREE.Vector3(0, 0.5, -2.5);
+        this.firstPersonCameraDefault = new THREE.Vector3(0, 0.5, -2.5);
         this.gfx.add(this.firstPersonCamera);
 
         this.camera = this.thirdPersonCamera;

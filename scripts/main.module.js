@@ -11,6 +11,8 @@ import Sounds from "./sounds/sounds.module.js";
 function run() {
     const camera = new Camera();
     const window = new Window(camera);
+    let frames = 0;
+    let fpsCounter = 0;
 
     let start = Date.now();
 
@@ -53,11 +55,6 @@ function run() {
         new Gun(camera, window, new THREE.Vector3(5, -6, -3), new THREE.Vector3(0, 0, -500));
         new AsteroidField(camera, window);
 
-        let cube = new primitives.Cube(100, new THREE.Vector3(0, 0, -30), 10, 0xff0000, 130, true, false);
-        window.addObject(cube);
-        cube = new primitives.Cube(100, new THREE.Vector3(30, 0, -30), 10, 0x00ff00, 130, true, false);
-        window.addObject(cube);
-
         let ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
         window.scene.add(ambientLight);
 
@@ -70,6 +67,14 @@ function run() {
 
         const delta = Date.now() - start;
         start = Date.now();
+        fpsCounter += delta;
+        frames++;
+        if (fpsCounter > 500) {
+            console.log(fpsCounter)
+            document.getElementById("fps").innerHTML = Math.round(frames / (fpsCounter / 1000)) + " fps";
+            fpsCounter = 0;
+            frames = 0;
+        }
 
         if (window.paused) {
             return;

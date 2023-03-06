@@ -6,7 +6,7 @@ export default class AsteroidField {
         this.player = player;
         this.win = window;
         this.asteroids = [];
-        this.maxEntities = 300;
+        this.maxEntities = 200;
 
         this.interval = setInterval(this.spawnAsteroid.bind(this), 300);
         this.spawnAsteroid();
