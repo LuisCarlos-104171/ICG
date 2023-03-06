@@ -8,7 +8,8 @@ function calculateMinMax(object, scale = new THREE.Vector3(1, 1, 1)) {
 
     if (object instanceof THREE.Mesh && object.visible) {
         let geo = object.geometry;
-        geo.computeBoundingBox();
+        if (geo.boundingBox === null)
+            geo.computeBoundingBox();
         let min = geo.boundingBox.min.clone().multiply(object.scale.clone().multiply(scale));
         let max = geo.boundingBox.max.clone().multiply(object.scale.clone().multiply(scale));
 
