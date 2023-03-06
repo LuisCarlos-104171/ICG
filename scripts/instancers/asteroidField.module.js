@@ -25,7 +25,6 @@ export default class AsteroidField {
     }
 
     spawnAsteroid() {
-        console.log(this.asteroids.length)
         this.asteroids = this.asteroids.filter(asteroid => {
             if (Math.pow(asteroid.position.x - this.player.position.x, 2) + Math.pow(asteroid.position.y - this.player.position.y, 2) + Math.pow(asteroid.position.z - this.player.position.z, 2) > 250000) {
                 asteroid.destroy();

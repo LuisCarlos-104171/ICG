@@ -12,7 +12,7 @@ export default class Window {
         this.renderer.setClearColor(0x000000);
         document.body.appendChild(this.renderer.domElement);
 
-        this.camera = camera.camera;
+        this.camera = camera;
         this.scene.add(camera.skybox);
         this.addObject(camera);
 
@@ -41,6 +41,6 @@ export default class Window {
     }
 
     render() {
-         this.renderer.render(this.scene, this.camera);
+         this.renderer.render(this.scene, this.camera.camera);
     }
 }

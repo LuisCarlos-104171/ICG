@@ -49,8 +49,8 @@ function run() {
         });
 
         // instance creators
-        new Gun(camera, window, new THREE.Vector3(-5, -6, -10), new THREE.Vector3(0, 0, -500));
-        new Gun(camera, window, new THREE.Vector3(5, -6, -10), new THREE.Vector3(0, 0, -500));
+        new Gun(camera, window, new THREE.Vector3(-5, -6, -3), new THREE.Vector3(0, 0, -500));
+        new Gun(camera, window, new THREE.Vector3(5, -6, -3), new THREE.Vector3(0, 0, -500));
         new AsteroidField(camera, window);
 
         let cube = new primitives.Cube(100, new THREE.Vector3(0, 0, -30), 10, 0xff0000, 130, true, false);

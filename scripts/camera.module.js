@@ -22,9 +22,15 @@ export default class Camera extends Player {
         );
         this.gfx = new THREE.Group();
 
-        this.camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
-        this.camera.position.set(0, 4, 10);
-        this.gfx.add(this.camera);
+        this.thirdPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.thirdPersonCamera.position.set(0, 4, 10);
+        this.gfx.add(this.thirdPersonCamera);
+
+        this.firstPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
+        this.firstPersonCamera.position.set(0, 0.5, -3);
+        this.gfx.add(this.firstPersonCamera);
+
+        this.camera = this.thirdPersonCamera;
 
         this.prev = { x: 0, y: 0 };
     }
@@ -79,7 +85,21 @@ export default class Camera extends Player {
             Input.requestPointerLock();
             if (!Camera.audioListener) {
                 Camera.audioListener = new THREE.AudioListener();
-                this.camera.add(Camera.audioListener);
+
+                this.thirdPersonCamera.add(Camera.audioListener);
+                this.firstPersonCamera.add(Camera.audioListener);
+            }
+        }
+
+        if (event === "keydown" && data.key === "1") {
+            if (this.camera !== this.thirdPersonCamera) {
+                this.camera = this.thirdPersonCamera;
+            }
+        }
+
+        if (event === "keydown" && data.key === "2") {
+            if (this.camera !== this.firstPersonCamera) {
+                this.camera = this.firstPersonCamera;
             }
         }
 
