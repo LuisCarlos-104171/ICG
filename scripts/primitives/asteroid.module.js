@@ -49,6 +49,7 @@ export default class Asteroid extends Body {
 
                 this.window.scene.add(...this.pieces);
                 this.window.scene.remove(this.gfx);
+                this.gfx = null;
             }
 
             if (this.animationCurrentTime >= this.animationMaxTime) {
@@ -62,6 +63,7 @@ export default class Asteroid extends Body {
     }
 
     destroy() {
+        if (this.gfx) this.window.scene.remove(this.gfx);
         this.collider.destroy();
         super.destroy();
         this.pieces.forEach(piece => this.window.scene.remove(piece));

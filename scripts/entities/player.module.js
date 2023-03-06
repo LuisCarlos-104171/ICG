@@ -90,6 +90,7 @@ export default class Player extends Input {
         this.addForce(physics.calculateFriction(this.velocity, Constants.PLAYER_FRICTION));
 
         this.velocity.add(this.acceleration.multiplyScalar(delta));
+        this.velocity.clampLength(0, 50);
         this.position.add(this.velocity.clone().multiplyScalar(delta));
 
         this.xPlayerPositionElement.innerText = (Math.round(this.position.x * 10) / 10).toString();

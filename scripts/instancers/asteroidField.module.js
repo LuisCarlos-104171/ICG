@@ -6,9 +6,9 @@ export default class AsteroidField {
         this.player = player;
         this.win = window;
         this.asteroids = [];
-        this.maxEntities = 500;
+        this.maxEntities = 400;
 
-        this.interval = setInterval(this.spawnAsteroid.bind(this), 1000);
+        this.interval = setInterval(this.spawnAsteroid.bind(this), 300);
         this.spawnAsteroid();
     }
 
@@ -20,30 +20,43 @@ export default class AsteroidField {
         return z * stdev + mean;
     }
 
+    randomInRange(min, max) {
+        return Math.random() * (max - min) + min;
+    }
+
     spawnAsteroid() {
+        console.log(this.asteroids.length)
+        this.asteroids = this.asteroids.filter(asteroid => {
+            if (Math.pow(asteroid.position.x - this.player.position.x, 2) + Math.pow(asteroid.position.y - this.player.position.y, 2) + Math.pow(asteroid.position.z - this.player.position.z, 2) > 250000) {
+                asteroid.destroy();
+                return false;
+            }
+            return true;
+        });
+
+        if (this.asteroids.length > this.maxEntities) {
+            return;
+        }
+
         const n = Math.random() * 100;
         const size = Math.random() * 10 + 5;
 
         for (let i = 0; i < n; i++) {
+            if (this.asteroids.length > this.maxEntities) {
+                return;
+            }
+
             let position = new THREE.Vector3(
                 this.gaussianRandom(0, 10),
                 this.gaussianRandom(0, 10),
                 this.gaussianRandom(0, 10)
-            ).normalize().multiplyScalar(Math.random() * 300 + 200);
+            ).normalize().multiplyScalar(this.randomInRange(200, 500)).add(this.player.position);
 
             let asteroid = new Asteroid(position, size, this.win);
 
             asteroid.velocity = this.randomUnitVector().multiplyScalar(Math.random() * 5 + 5);
             this.asteroids.push(asteroid);
             this.win.addObject(asteroid);
-        }
-
-        if (this.asteroids.length > this.maxEntities) {
-            clearInterval(this.interval);
-            for (let i = 0; i < this.asteroids.length - this.maxEntities; i++) {
-                this.asteroids[i].destroy();
-            }
-            this.asteroids = this.asteroids.slice(this.asteroids.length - this.maxEntities);
         }
     }
 
