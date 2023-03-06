@@ -6,7 +6,7 @@ export default class AsteroidField {
         this.player = player;
         this.win = window;
         this.asteroids = [];
-        this.maxEntities = 400;
+        this.maxEntities = 300;
 
         this.interval = setInterval(this.spawnAsteroid.bind(this), 300);
         this.spawnAsteroid();
@@ -34,7 +34,7 @@ export default class AsteroidField {
             return true;
         });
 
-        if (this.asteroids.length > this.maxEntities) {
+        if (this.asteroids.length >= this.maxEntities) {
             return;
         }
 
@@ -42,7 +42,7 @@ export default class AsteroidField {
         const size = Math.random() * 10 + 5;
 
         for (let i = 0; i < n; i++) {
-            if (this.asteroids.length > this.maxEntities) {
+            if (this.asteroids.length >= this.maxEntities) {
                 return;
             }
 

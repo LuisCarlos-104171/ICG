@@ -29,7 +29,7 @@ function calculateMinMax(object, scale = new THREE.Vector3(1, 1, 1)) {
 
 export default class MeshCollider {
     static counter = 0;
-    static colliders = new OctTree(new Boundary(-1000, -1000, -1000, 1000, 1000, 1000), 20);
+    static colliders = new OctTree(new Boundary(-1000, -1000, -1000, 1000, 1000, 1000), 200);
 
     constructor(obj, mesh, fixed, onCollision=null) {
         this.obj = obj;
