@@ -92,7 +92,11 @@ export default class Player extends Input {
         this.addForce(physics.calculateFriction(this.velocity, Constants.PLAYER_FRICTION));
 
         this.velocity.add(this.acceleration.multiplyScalar(delta));
-        this.velocity.clampLength(0, 50);
+        this.velocity = new THREE.Vector3(
+            Math.min(Math.max(this.velocity.x, -Constants.PLAYER_MAX_SPEED), Constants.PLAYER_MAX_SPEED),
+            Math.min(Math.max(this.velocity.y, -Constants.PLAYER_MAX_SPEED), Constants.PLAYER_MAX_SPEED),
+            Math.min(Math.max(this.velocity.z, -Constants.PLAYER_MAX_SPEED), Constants.PLAYER_MAX_SPEED)
+        );
         this.position.add(this.velocity.clone().multiplyScalar(delta));
 
         this.xPlayerPositionElement.innerText = (Math.round(this.position.x * 10) / 10).toString();

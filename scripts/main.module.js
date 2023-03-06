@@ -2,7 +2,6 @@ import * as THREE from 'three';
 import { GLTFLoader } from "addons/loaders/GLTFLoader.js";
 import Window from './window.module.js';
 import Camera from './camera.module.js';
-import primitives from './primitives/primitives.module.js';
 import Gun from "./instancers/gun.module.js";
 import AsteroidField from "./instancers/asteroidField.module.js";
 import Models from "./models.module.js";
@@ -13,6 +12,7 @@ function run() {
     const window = new Window(camera);
     let frames = 0;
     let fpsCounter = 0;
+    const fpsElement = document.getElementById("fps");
 
     let start = Date.now();
 
@@ -73,8 +73,7 @@ function run() {
         fpsCounter += delta;
         frames++;
         if (fpsCounter > 500) {
-            console.log(fpsCounter)
-            document.getElementById("fps").innerHTML = Math.round(frames / (fpsCounter / 1000)) + " fps";
+            fpsElement.innerHTML = Math.round(frames / (fpsCounter / 1000)) + " fps";
             fpsCounter = 0;
             frames = 0;
         }
