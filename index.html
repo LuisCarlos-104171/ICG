@@ -10,8 +10,11 @@
     <title>ICG - Final Project</title>
 </head>
 <body>
-    <div id="loading_screen">
+    <div class="screen" id="loading_screen">
         <h1>Loading...</h1>
+    </div>
+    <div class="screen" style="display: none" id="deathScreen">
+        <h1>You died!</h1>
     </div>
 
     <div id="UI">
@@ -19,6 +22,10 @@
 
         <div id="pause_controls">
             <h1>Game Paused!</h1>
+        </div>
+
+        <div class="health">
+            <div id="healthBar"></div>
         </div>
 
         <div class="speedometer" id="speedometer">

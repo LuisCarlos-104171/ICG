@@ -21,6 +21,11 @@ export default class Window {
     get paused() {
         return this.pause.paused;
     }
+
+    get gameOver() {
+        return this.camera.dead;
+    }
+
     addObject(object) {
         this.scene.add(object.gfx);
     }

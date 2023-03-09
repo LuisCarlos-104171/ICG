@@ -7,15 +7,14 @@ body {
     overflow: hidden;
 }
 
-#loading_screen {
+.screen {
     position: absolute;
     top: 0;
     left: 0;
+    bottom: 0;
+    right: 0;
 
     z-index: 1000000;
-
-    width: 100%;
-    height: 100%;
 
     background-color: #867575;
     color: #bbb89b;
@@ -122,4 +121,30 @@ body {
     color: white;
     padding: 5px;
     margin-right: 10px;
+}
+
+.health {
+    position: absolute;
+
+    top: 3%;
+    left: 50%;
+
+    transform: translateX(-50%);
+
+    width: 50vw;
+    height: 20px;
+
+    border: 3px solid rgba(255, 255, 255, 0.5);
+}
+
+#healthBar {
+    position: absolute;
+
+    top: 0;
+    left: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background-color: #9e9ee9;
 }

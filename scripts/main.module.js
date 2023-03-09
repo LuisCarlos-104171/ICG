@@ -78,7 +78,7 @@ function run() {
             frames = 0;
         }
 
-        if (window.paused) {
+        if (window.paused || window.gameOver) {
             return;
         }
         window.tick(delta / 1000);

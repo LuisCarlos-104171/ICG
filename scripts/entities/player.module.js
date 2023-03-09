@@ -16,6 +16,8 @@ export default class Player extends Input {
 
         this.Cr = 0.6;
         this.mass = 100;
+        this.maxHealth = 1000;
+        this.health = this.maxHealth;
 
         this.rotation = new THREE.Quaternion();
         this.collider = null;
@@ -35,6 +37,9 @@ export default class Player extends Input {
         this.xPlayerAccelerationElement = document.getElementById("playerAccelerationX");
         this.yPlayerAccelerationElement = document.getElementById("playerAccelerationY");
         this.zPlayerAccelerationElement = document.getElementById("playerAccelerationZ");
+
+        this.healthBar = document.getElementById("healthBar");
+        this.deathScreen = document.getElementById("deathScreen");
     }
 
     addForce(force) {
@@ -109,7 +114,22 @@ export default class Player extends Input {
         this.zPlayerAccelerationElement.innerText = (Math.round(this.acceleration.z * 10) / 10).toString();
     }
 
+    calculatePercentage() {
+        return (this.health / this.maxHealth) * 100;
+    }
+
     takeDamage(damage) {
-        console.log("Player took " + damage + " damage!");
+        this.health -= damage;
+        this.healthBar.style.width = (this.calculatePercentage()) + "%";
+
+        if (this.health <= 0) {
+            this.health = 0;
+            this.die();
+        }
+    }
+
+    die() {
+        this.deathScreen.style.display = "flex";
+        this.dead = true;
     }
 }
