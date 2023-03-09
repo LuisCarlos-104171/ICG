@@ -54,11 +54,11 @@ export default class Camera extends Player {
 
         // Calculate the normalized position of the mouse in the viewport (-1 to +1)
         const normalizedMouseX = -(mouseX / window.innerWidth) * 2 - 1;
-        const normalizedMouseY = -(mouseY / window.innerHeight) * 2 + 1;
+        const normalizedMouseY = -(mouseY / window.innerHeight) * 2 - 1;
 
         // Calculate the target rotation angles based on the mouse position
-        const targetRotationX = normalizedMouseY * Math.PI; // Limit vertical rotation to 90 degrees
-        let targetRotationY = normalizedMouseX * Math.PI;
+        const targetRotationX = normalizedMouseY * Math.PI;
+        const targetRotationY = normalizedMouseX * Math.PI;
 
         // Create a new Quaternion representing the clamped rotation
         const targetQuaternion = new THREE.Quaternion()
@@ -73,7 +73,7 @@ export default class Camera extends Player {
         this.rotation = this.gfx.quaternion;
 
         this.prev.x = mouseX;
-        this.prev.y = Math.min(mouseY, window.innerHeight);
+        this.prev.y = mouseY;
     }
 
     update(event, data) {
