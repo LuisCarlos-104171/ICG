@@ -14,14 +14,13 @@ export default class Player extends Input {
         this.velocity = new THREE.Vector3(0, 0, 0);
         this.acceleration = new THREE.Vector3(0, 0, 0);
 
-        this.Cr = 1;
+        this.Cr = 0.6;
         this.mass = 100;
 
         this.rotation = new THREE.Quaternion();
         this.collider = null;
 
         this.movement = new THREE.Vector3(0, 0, 0);
-        this.yAxis = 0;
 
         this.ui = document.getElementById("UI");
 
@@ -49,7 +48,6 @@ export default class Player extends Input {
     tick(delta) {
         this.acceleration.set(0, 0, 0);
         this.movement = new THREE.Vector3(0, 0, 0);
-        this.yAxis = 0;
 
         if (Input.isPressed("w")) {
             this.movement.z -= 1;
@@ -67,25 +65,24 @@ export default class Player extends Input {
             this.movement.x += 1;
         }
 
-        if (Input.isPressed("e")) {
-            this.yAxis = 1;
+        if (Input.isPressed("q")) {
+            this.movement.y -= 1;
         }
 
-        if (Input.isPressed("q")) {
-            this.yAxis = -1;
+        if (Input.isPressed("e")) {
+            this.movement.y += 1;
         }
 
         const uiMovement = this.movement.normalize();
         const uiScale = -uiMovement.z * 1.5 + 100;
         const uiX = -uiMovement.x * 2;
-        const uiY = this.yAxis * 2;
+        const uiY = -uiMovement.y * 2;
 
         this.ui.style.transform = "scale(" + uiScale + "%)";
         this.ui.style.left = uiX + "%";
         this.ui.style.top = uiY + "%";
 
         this.movement.normalize().multiplyScalar(4000).applyQuaternion(this.rotation);
-        this.movement.y = this.yAxis * 2000;
         this.addForce(this.movement);
 
         // friction

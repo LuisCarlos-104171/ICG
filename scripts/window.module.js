@@ -3,16 +3,15 @@ import Input from "./input/input.module.js";
 import Body from "./body.module.js";
 import MeshCollider from "./colliders/meshCollider.module.js";
 import PauseControl from "./pauseControl.module.js";
+import Renderer from "./renderer.module.js";
 
 export default class Window {
     constructor(camera) {
         this.scene = new THREE.Scene();
-        this.renderer = new THREE.WebGLRenderer();
-        this.renderer.setSize(window.innerWidth, window.innerHeight);
-        this.renderer.setClearColor(0x000000);
-        document.body.appendChild(this.renderer.domElement);
+        this.renderer = new Renderer();
 
         this.camera = camera;
+        this.scene.fog = new THREE.Fog(0x000000, 350, 450);
         this.scene.add(camera.skybox);
         this.addObject(camera);
 

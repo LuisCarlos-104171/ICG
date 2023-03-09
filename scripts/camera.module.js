@@ -12,15 +12,17 @@ export default class Camera extends Player {
         this.skybox = new THREE.Mesh(
             new THREE.BoxGeometry(1000, 1000, 1000),
             [
-                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("images/skybox/corona_ft.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("images/skybox/corona_bk.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("images/skybox/corona_up.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("images/skybox/corona_dn.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("images/skybox/corona_rt.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ map: new THREE.TextureLoader().load("images/skybox/corona_lf.png"), side: THREE.DoubleSide })
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_ft.png"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_bk.png"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_up.png"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_dn.png"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_rt.png"), side: THREE.DoubleSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_lf.png"), side: THREE.DoubleSide })
             ]
         );
+
         this.gfx = new THREE.Group();
+        this.model = null;
 
         this.thirdPersonCamera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000);
         this.thirdPersonCamera.position.set(0, 4, 10);
@@ -41,11 +43,9 @@ export default class Camera extends Player {
     onModelsLoaded() {
         super.onModelsLoaded();
 
-        let model = Models.spaceship;
-        // point the model forward
-        model.rotation.y = -Math.PI / 2;
-
-        this.gfx.add(model);
+        this.model = Models.spaceship;
+        this.model.rotation.y += -Math.PI / 2;
+        this.gfx.add(this.model);
     }
 
     rotate(event) {
@@ -58,18 +58,13 @@ export default class Camera extends Player {
 
         // Calculate the target rotation angles based on the mouse position
         const targetRotationX = normalizedMouseY * Math.PI; // Limit vertical rotation to 90 degrees
-        const targetRotationY = normalizedMouseX * Math.PI;
-
-        // Clamp the target rotation angles
-        const minRotationX = -Math.PI * 0.5; // Minimum vertical rotation is -90 degrees
-        const maxRotationX = Math.PI * 0.5; // Maximum vertical rotation is 90 degrees
-        const clampedRotationX = Math.max(minRotationX, Math.min(maxRotationX, targetRotationX));
+        let targetRotationY = normalizedMouseX * Math.PI;
 
         // Create a new Quaternion representing the clamped rotation
         const targetQuaternion = new THREE.Quaternion()
             .setFromAxisAngle(new THREE.Vector3(0, 1, 0), targetRotationY)
             .multiply(new THREE.Quaternion()
-                .setFromAxisAngle(new THREE.Vector3(1, 0, 0), clampedRotationX)
+                .setFromAxisAngle(new THREE.Vector3(1, 0, 0), targetRotationX)
             );
 
         // Rotate the camera's quaternion towards the target quaternion
@@ -127,7 +122,7 @@ export default class Camera extends Player {
 
         if (this.movement.length() > 0) {
             const move = this.movement.clone().divideScalar(4000).multiplyScalar(0.3).add(this.firstPersonCameraDefault);
-            this.firstPersonCameraDesire = new THREE.Vector3(move.x, this.yAxis * 0.07 + this.firstPersonCameraDefault.y, move.z);
+            this.firstPersonCameraDesire = new THREE.Vector3(move.x, move.y * 0.07 + this.firstPersonCameraDefault.y, move.z);
         } else {
             this.firstPersonCameraDesire = this.firstPersonCameraDefault;
         }
