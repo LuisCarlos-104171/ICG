@@ -55,7 +55,6 @@ export default class OctTree {
 
         if (this.node.points.length < this.capacity) {
             this.node.points.push(collider);
-            this.node.points.sort((a, b) => a.id - b.id);
             return true;
         }
 

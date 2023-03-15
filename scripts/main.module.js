@@ -6,6 +6,7 @@ import Gun from "./instancers/gun.module.js";
 import AsteroidField from "./instancers/asteroidField.module.js";
 import Models from "./models.module.js";
 import Sounds from "./sounds/sounds.module.js";
+import Enemy from "./enemies/enemy.module.js";
 
 function run() {
     const camera = new Camera();
@@ -58,8 +59,11 @@ function run() {
         new Gun(camera, window, new THREE.Vector3(5, -6, -3), new THREE.Vector3(0, 0, -500));
         new AsteroidField(camera, window);
 
+        const enemy = new Enemy(new THREE.Vector3(0, 0, -100), camera);
+
         let ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
         window.scene.add(ambientLight);
+        window.addObject(enemy);
 
         camera.onModelsLoaded();
         requestAnimationFrame(updateLoop);

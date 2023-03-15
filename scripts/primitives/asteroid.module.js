@@ -78,7 +78,7 @@ export default class Asteroid extends Body {
 
     onCollision(other) {
         if (other.obj instanceof Bullet) {
-            this.takeDamage(1);
+            this.takeDamage(other.obj.damage);
         } else if (other.obj instanceof Player) {
             this.takeDamage(0.2 * other.obj.velocity.length());
             other.obj.takeDamage(0.2 * other.obj.velocity.length());

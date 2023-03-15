@@ -48,17 +48,19 @@ export default class MeshCollider {
 
         this.min = min;
         this.max = max;
-        this.recalculate = false;
 
         MeshCollider.colliders.register(this);
 
         this.mesh = mesh;
         this.meshChildren = [];
-        mesh.traverse(child => {
-            if (child instanceof THREE.Mesh) {
-                this.meshChildren.push(child);
-            }
-        });
+
+        if (mesh instanceof THREE.Group) {
+            mesh.traverse(child => {
+                if (child instanceof THREE.Mesh) {
+                    this.meshChildren.push(child);
+                }
+            });
+        }
 
         this.raycaster = new THREE.Raycaster();
     }
@@ -98,10 +100,8 @@ export default class MeshCollider {
                 this.min = min;
                 this.max = max;
 
-                if (collider.recalculate) {
-                    MeshCollider.colliders.remove(collider);
-                    MeshCollider.colliders.register(collider);
-                }
+                MeshCollider.colliders.remove(collider);
+                MeshCollider.colliders.register(collider);
             }
         }
 

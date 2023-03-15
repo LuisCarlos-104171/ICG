@@ -18,6 +18,8 @@ export default class Bullet extends Body {
         this.collider = new MeshCollider(this, this.gfx, false, this.destroy.bind(this));
         this.startTime = Date.now();
         this.scene = scene;
+
+        this.damage = 1;
     }
 
     update(delta) {
