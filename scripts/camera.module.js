@@ -111,7 +111,6 @@ export default class Camera extends Player {
 
         // angular velocity
         this.angularVelocity.multiplyScalar(0.91);
-        console.log(this.angularVelocity);
 
         // rotation
         const deltaQuaternion = new THREE.Quaternion()
