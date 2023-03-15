@@ -38,6 +38,7 @@ export default class Camera extends Player {
         this.speedometer = document.getElementById("speedometer");
 
         this.prev = { x: 0, y: 0 };
+        this.angularVelocity = new THREE.Vector3(0, 0, 0);
     }
 
     onModelsLoaded() {
@@ -52,25 +53,13 @@ export default class Camera extends Player {
         const mouseX = this.prev.x + event.movementX;
         const mouseY = this.prev.y + event.movementY;
 
-        // Calculate the normalized position of the mouse in the viewport (-1 to +1)
-        const normalizedMouseX = -(mouseX / window.innerWidth) * 2 - 1;
-        const normalizedMouseY = -(mouseY / window.innerHeight) * 2 - 1;
-
         // Calculate the target rotation angles based on the mouse position
-        const targetRotationX = normalizedMouseY * Math.PI;
-        const targetRotationY = normalizedMouseX * Math.PI;
+        const targetRotationX = event.movementY * Math.PI * 0.1;
+        const targetRotationY = event.movementX * Math.PI * 0.1;
 
-        // Create a new Quaternion representing the clamped rotation
-        const targetQuaternion = new THREE.Quaternion()
-            .setFromAxisAngle(new THREE.Vector3(0, 1, 0), targetRotationY)
-            .multiply(new THREE.Quaternion()
-                .setFromAxisAngle(new THREE.Vector3(1, 0, 0), targetRotationX)
-            );
-
-        // Rotate the camera's quaternion towards the target quaternion
-        const speed = 0.2; // Adjust this to change the rotation speed
-        this.gfx.quaternion.slerp(targetQuaternion, speed);
-        this.rotation = this.gfx.quaternion;
+        // Update the angular velocity
+        this.angularVelocity.x += -targetRotationX;
+        this.angularVelocity.y += -targetRotationY;
 
         this.prev.x = mouseX;
         this.prev.y = mouseY;
@@ -119,6 +108,22 @@ export default class Camera extends Player {
 
     tick(delta) {
         super.tick(delta);
+
+        // angular velocity
+        this.angularVelocity.multiplyScalar(0.91);
+        console.log(this.angularVelocity);
+
+        // rotation
+        const deltaQuaternion = new THREE.Quaternion()
+            .setFromAxisAngle(new THREE.Vector3(1, 0, 0), this.angularVelocity.x * delta)
+            .multiply(new THREE.Quaternion()
+                .setFromAxisAngle(new THREE.Vector3(0, 1, 0), this.angularVelocity.y * delta)
+            )
+            .multiply(new THREE.Quaternion()
+                .setFromAxisAngle(new THREE.Vector3(0, 0, -1), this.angularVelocity.z * delta)
+            );
+        this.gfx.quaternion.multiply(deltaQuaternion);
+        this.rotation = this.gfx.quaternion;
 
         if (this.movement.length() > 0) {
             const move = this.movement.clone().divideScalar(4000).multiplyScalar(0.3).add(this.firstPersonCameraDefault);
