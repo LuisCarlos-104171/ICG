@@ -104,6 +104,14 @@ export default class Camera extends Player {
                 this.prev.y = data.clientY;
             }
         }
+
+        if (event === "resize") {
+            this.thirdPersonCamera.aspect = window.innerWidth / window.innerHeight;
+            this.thirdPersonCamera.updateProjectionMatrix();
+
+            this.firstPersonCamera.aspect = window.innerWidth / window.innerHeight;
+            this.firstPersonCamera.updateProjectionMatrix();
+        }
     }
 
     tick(delta) {

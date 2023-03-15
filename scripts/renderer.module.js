@@ -15,6 +15,7 @@ export default class Renderer extends Input {
     update(event, data) {
         if (event === "resize") {
             this.renderer.setSize(window.innerWidth, window.innerHeight);
+            this.renderer.setPixelRatio(window.devicePixelRatio);
         }
     }
 
