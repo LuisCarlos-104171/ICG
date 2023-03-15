@@ -69,7 +69,7 @@ export default class Asteroid extends Body {
         this.pieces.forEach(piece => this.window.scene.remove(piece));
     }
 
-    takeDamage(amt) {
+    damage(amt) {
         this.health -= amt;
         if (this.health <= 0) {
             this.dead = true;
@@ -77,11 +77,9 @@ export default class Asteroid extends Body {
     }
 
     onCollision(other) {
-        if (other.obj instanceof Bullet) {
-            this.takeDamage(other.obj.damage);
-        } else if (other.obj instanceof Player) {
+        if (other.obj instanceof Player) {
             this.takeDamage(0.2 * other.obj.velocity.length());
-            other.obj.takeDamage(0.2 * other.obj.velocity.length());
+            other.obj.damage(0.2 * other.obj.velocity.length());
         }
 
         return true;

@@ -32,6 +32,9 @@ export default class Bullet extends Body {
     }
 
     destroy(other) {
+        if (other && other.obj.hasOwnProperty("health"))
+            other.obj.damage(this.damage);
+
         this.scene.remove(this.gfx);
         super.destroy();
         this.collider.destroy();

@@ -4,11 +4,16 @@ import * as THREE from "three";
 
 export default class SoundFX {
     constructor(soundName, volume = 0.5) {
-        this.audio = new THREE.Audio(Camera.audioListener);
-        this.audio.setBuffer(Sounds[soundName]);
-        this.audio.setVolume(volume);
+        this.sound = Sounds[soundName];
+        this.volume = volume;
     }
     play() {
+        if (!Camera.audioListener)
+            return
+
+        this.audio = new THREE.Audio(Camera.audioListener);
+        this.audio.setBuffer(this.sound);
+        this.audio.setVolume(this.volume);
         this.audio.play();
     }
 }

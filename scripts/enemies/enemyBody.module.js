@@ -2,7 +2,6 @@ import Body from "../body.module.js";
 import Constants from "../constants.module.js";
 import MeshCollider from "../colliders/meshCollider.module.js";
 import * as THREE from 'three';
-import Bullet from "../primitives/bullet.module.js";
 
 export default class EnemyBody extends Body {
     constructor(position, target) {
@@ -12,7 +11,9 @@ export default class EnemyBody extends Body {
             new THREE.SphereGeometry(10),
             new THREE.MeshPhongMaterial({ color: 0xffffff })
         );
-        this.collider = new MeshCollider(this, this.gfx, false, this.onCollision.bind(this));
+
+        this.gfx.position.copy(this.position);
+        this.collider = new MeshCollider(this, this.gfx, false);
         this.health = 100;
     }
 
@@ -31,22 +32,19 @@ export default class EnemyBody extends Body {
 
         // sets the graphics position to the physics position
         this.gfx.position.copy(this.position);
-    }
-
-    onCollision(other) {
-        if (other.obj instanceof Bullet) {
-            this.health -= other.obj.damage;
-            if (this.health <= 0) {
-                this.destroy();
-            }
-        }
-
-        return true;
+        this.gfx.lookAt(this.target.position);
     }
 
     destroy() {
         this.gfx.parent.remove(this.gfx);
         super.destroy();
         this.collider.destroy();
+    }
+
+    damage(amount) {
+        this.health -= amount;
+        if (this.health <= 0) {
+            this.destroy();
+        }
     }
 }

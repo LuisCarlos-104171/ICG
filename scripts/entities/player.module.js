@@ -118,7 +118,7 @@ export default class Player extends Input {
         return (this.health / this.maxHealth) * 100;
     }
 
-    takeDamage(damage) {
+    damage(damage) {
         this.health -= damage;
         this.healthBar.style.width = (this.calculatePercentage()) + "%";
 

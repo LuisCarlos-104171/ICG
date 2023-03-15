@@ -59,13 +59,13 @@ function run() {
         new Gun(camera, window, new THREE.Vector3(5, -6, -3), new THREE.Vector3(0, 0, -500));
         new AsteroidField(camera, window);
 
-        const enemy = new Enemy(new THREE.Vector3(0, 0, -100), camera);
 
         let ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
         window.scene.add(ambientLight);
-        window.addObject(enemy);
 
         camera.onModelsLoaded();
+        const enemy = new Enemy(new THREE.Vector3(0, 0, -100), camera, window);
+        window.addObject(enemy);
         requestAnimationFrame(updateLoop);
     });
 
