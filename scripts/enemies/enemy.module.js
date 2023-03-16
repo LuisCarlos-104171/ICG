@@ -87,12 +87,10 @@ export default class Enemy extends EnemyBody {
 
         this.shootingDelay = 0.1;
         this.shootingDelaySum = 0;
-        this.shootingSpread = 5;
+        this.shootingSpread = 10;
 
         this.aiState = states.PURSUING;
         this.behavior = behaviours[this.aiState];
-
-        this.previousTargetVelocity = this.target.velocity.clone();
     }
 
     randomVector3() {
@@ -113,15 +111,17 @@ export default class Enemy extends EnemyBody {
             this.applyForce(force.clone().sub(this.velocity).clampLength(0, 4000));
         }
 
-        const p0 = this.target.position.clone();
-        const v0 = this.target.velocity.clone();
-        const a0 = this.target.velocity.clone().sub(this.previousTargetVelocity).divideScalar(delta);
-        this.previousTargetVelocity = this.target.velocity.clone();
+        const pp = this.position.clone().add(this.gunPoint);
+        const vp = this.gfx.localToWorld(this.gunForce.clone()).sub(this.gfx.localToWorld(this.gunPoint.clone()))
 
-        let futureDelta = this.gunForce.length() / this.target.position.distanceTo(this.position);
+        const pt = this.target.position.clone();
+        const vt = this.target.velocity.clone();
 
-        const future = p0.clone().add(v0.clone().multiplyScalar(futureDelta)).add(a0.clone().multiplyScalar(futureDelta * futureDelta / 2));
-        this.gfx.lookAt(future);
+        const vr = vt.clone().sub(vp);
+        const t = pp.distanceTo(pt) / vr.length();
+
+        const pi = pt.clone().add(vr.clone().multiplyScalar(t));
+        this.gfx.lookAt(pi);
 
         super.update(delta);
 
