@@ -19,11 +19,13 @@ function run() {
 
     const models = [
         ["models/spaceship.gltf", "spaceship"],
-        ["models/asteroid01.gltf", "asteroid01"]
+        ["models/asteroid01.gltf", "asteroid01"],
+        ["models/enemy01.gltf", "enemy01"],
     ];
 
     const sounds = [
-        ["sounds/shooting.wav", "shot"],
+        ["sounds/shooting01.wav", "shot"],
+        ["sounds/shooting02.wav", "shot"],
         ["sounds/explosion.wav", "explosion"]
     ];
 
@@ -45,7 +47,11 @@ function run() {
     Promise.all(promises).then((results) => {
         results.forEach(result => {
             if (result.type === "sound") {
-                Sounds[result.name] = result.sound;
+                if (Sounds[result.name] instanceof Array) {
+                    Sounds[result.name].push(result.sound);
+                } else {
+                    Sounds[result.name] = result.sound;
+                }
             } else {
                 Models[result.name] = result.scene;
             }

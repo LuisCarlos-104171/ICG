@@ -11,8 +11,15 @@ export default class SoundFX {
         if (!Camera.audioListener)
             return
 
+        let sound;
+        if (this.sound instanceof Array) {
+            sound = this.sound[Math.floor(Math.random() * this.sound.length)];
+        } else {
+            sound = this.sound;
+        }
+
         this.audio = new THREE.Audio(Camera.audioListener);
-        this.audio.setBuffer(this.sound);
+        this.audio.setBuffer(sound);
         this.audio.setVolume(this.volume);
         this.audio.play();
     }

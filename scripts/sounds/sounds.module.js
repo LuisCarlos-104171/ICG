@@ -1,4 +1,4 @@
 export default class Sounds {
-    static shot = null;
+    static shot = [];
     static explosion = null;
 }

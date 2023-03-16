@@ -2,15 +2,13 @@ import Body from "../body.module.js";
 import Constants from "../constants.module.js";
 import MeshCollider from "../colliders/meshCollider.module.js";
 import * as THREE from 'three';
+import Models from "../models.module.js";
 
 export default class EnemyBody extends Body {
     constructor(position, target, window) {
         super(new THREE.Vector3(10, 10, 10), 100, position);
         this.target = target;
-        this.gfx = new THREE.Mesh(
-            new THREE.SphereGeometry(10),
-            new THREE.MeshPhongMaterial({ color: 0xffffff })
-        );
+        this.gfx = Models.enemy01.clone();
 
         this.gfx.position.copy(this.position);
         this.collider = new MeshCollider(this, this.gfx, false);
