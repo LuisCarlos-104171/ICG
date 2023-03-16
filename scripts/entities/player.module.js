@@ -16,8 +16,12 @@ export default class Player extends Input {
 
         this.Cr = 0.6;
         this.mass = 100;
-        this.maxHealth = 1000;
+        this.maxHealth = 500;
         this.health = this.maxHealth;
+
+        this.regenRate = 20;
+        this.regenDelay = 5;
+        this.regenTimer = 0;
 
         this.rotation = new THREE.Quaternion();
         this.collider = null;
@@ -39,6 +43,7 @@ export default class Player extends Input {
         this.zPlayerAccelerationElement = document.getElementById("playerAccelerationZ");
 
         this.healthBar = document.getElementById("healthBar");
+        this.healthDiv = document.getElementById("health");
         this.deathScreen = document.getElementById("deathScreen");
     }
 
@@ -53,6 +58,20 @@ export default class Player extends Input {
     tick(delta) {
         this.acceleration.set(0, 0, 0);
         this.movement = new THREE.Vector3(0, 0, 0);
+
+        if (this.regenTimer > this.regenDelay) {
+            this.health += this.regenRate * delta;
+            this.health = Math.min(this.health, this.maxHealth);
+            this.healthBar.style.width = (this.calculatePercentage()) + "%";
+        } else {
+            this.regenTimer += delta;
+        }
+
+        if (this.health === this.maxHealth) {
+            this.healthDiv.style.opacity = "0";
+        } else {
+            this.healthDiv.style.opacity = "1";
+        }
 
         if (Input.isPressed("w")) {
             this.movement.z -= 1;
@@ -119,6 +138,7 @@ export default class Player extends Input {
     }
 
     damage(damage) {
+        this.regenTimer = 0;
         this.health -= damage;
         this.healthBar.style.width = (this.calculatePercentage()) + "%";
 

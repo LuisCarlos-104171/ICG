@@ -4,7 +4,7 @@ import MeshCollider from "../colliders/meshCollider.module.js";
 import * as THREE from 'three';
 
 export default class EnemyBody extends Body {
-    constructor(position, target) {
+    constructor(position, target, window) {
         super(new THREE.Vector3(10, 10, 10), 100, position);
         this.target = target;
         this.gfx = new THREE.Mesh(
@@ -15,14 +15,10 @@ export default class EnemyBody extends Body {
         this.gfx.position.copy(this.position);
         this.collider = new MeshCollider(this, this.gfx, false);
         this.health = 100;
+        this.window = window;
     }
 
     update(delta) {
-        let direction = this.target.position.clone().sub(this.position);
-        direction.normalize();
-
-        this.applyForce(direction.multiplyScalar(2500));
-
         // apply physics
         super.update(delta);
         // limit speed
@@ -36,7 +32,7 @@ export default class EnemyBody extends Body {
     }
 
     destroy() {
-        this.gfx.parent.remove(this.gfx);
+        this.window.scene.remove(this.gfx);
         super.destroy();
         this.collider.destroy();
     }

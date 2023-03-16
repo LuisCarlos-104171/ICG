@@ -39,6 +39,8 @@ export default class Camera extends Player {
 
         this.prev = { x: 0, y: 0 };
         this.angularVelocity = new THREE.Vector3(0, 0, 0);
+
+        this.cameraSpeed = 0.1;
     }
 
     onModelsLoaded() {
@@ -58,8 +60,8 @@ export default class Camera extends Player {
         const targetRotationY = event.movementX * Math.PI * 0.1;
 
         // Update the angular velocity
-        this.angularVelocity.x += -targetRotationX;
-        this.angularVelocity.y += -targetRotationY;
+        this.angularVelocity.x -= targetRotationX * this.cameraSpeed;
+        this.angularVelocity.y -= targetRotationY * this.cameraSpeed;
 
         this.prev.x = mouseX;
         this.prev.y = mouseY;

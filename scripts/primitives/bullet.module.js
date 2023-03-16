@@ -19,7 +19,7 @@ export default class Bullet extends Body {
         this.startTime = Date.now();
         this.scene = scene;
 
-        this.damage = 1;
+        this.damage = 5;
     }
 
     update(delta) {

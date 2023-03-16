@@ -3,41 +3,135 @@ import SoundFX from "../sounds/soundFX.module.js";
 import Bullet from "../primitives/bullet.module.js";
 import * as THREE from 'three';
 
+
+const states = {
+    PURSUING: 0,
+    ATTACKING: 1,
+    RETREATING: 2,
+}
+
+function linearMapping(value, inMin, inMax, outMin, outMax) {
+    const proportion = (value - inMin) / (inMax - inMin);
+    return outMin + proportion * (outMax - outMin)
+}
+
+const behaviours = [
+    function pursuing() {
+        if (this.target.position.distanceTo(this.position) < 150) {
+            return [states.ATTACKING, null]
+        }
+
+        const desire = this.position.clone().sub(this.target.position).normalize();
+        const dx = desire.length()
+        if (dx < 200) {
+            desire.multiplyScalar(linearMapping(dx, 150, 200, -8000, 8000));
+        } else {
+            desire.multiplyScalar(4000);
+        }
+
+        return [
+            states.PURSUING,
+            desire
+        ];
+    },
+    function attacking() {
+        const dst = this.target.position.distanceTo(this.position);
+        if (dst > 200) {
+            return [states.PURSUING, null]
+        }
+
+        if (dst < 70) {
+            return [states.RETREATING, null]
+        }
+
+        const maxDst = 200;
+        const minDst = 70;
+
+        // keep a distance to the target
+        const dstToTarget = this.target.position.distanceTo(this.position);
+        const desire = this.position.clone().sub(this.target.position)
+            .normalize()
+            .multiplyScalar(linearMapping(dstToTarget, minDst, maxDst, 7000, -7000));
+
+
+        return [
+            states.ATTACKING,
+            desire
+        ];
+    },
+    function retreating() {
+        if (this.target.position.distanceTo(this.position) > 300) {
+            return [states.PURSUING, null]
+        }
+
+        const desire = this.position.clone().sub(this.target.position);
+        const dx = desire.length();
+        desire
+            .normalize()
+            .multiplyScalar(linearMapping(dx, 0, 400, 8000, -8000));
+        return [
+            states.RETREATING,
+            desire
+        ];
+    }
+]
+
 export default class Enemy extends EnemyBody {
     constructor(position, target, window) {
-        super(position, target);
+        super(position, target, window);
 
-        this.gunPoint = new THREE.Vector3(0, 0, 15);
+        this.gunPoint = new THREE.Vector3(0, 0, 20);
         this.gunForce = new THREE.Vector3(0, 0, 500);
-
-        this.win = window;
 
         this.shooting = false;
 
-        this.reloadTime = 0.3;
-        this.magazineSize = 100;
-        this.magazine = this.magazineSize;
-        this.magazineReloadSum = 0;
-
         this.shootingDelay = 0.1;
         this.shootingDelaySum = 0;
+        this.shootingSpread = 5;
+
+        this.aiState = states.PURSUING;
+        this.behavior = behaviours[this.aiState];
+
+        this.previousTargetVelocity = this.target.velocity.clone();
+    }
+
+    randomVector3() {
+        return new THREE.Vector3(
+            Math.random() * 2 - 1,
+            Math.random() * 2 - 1,
+            Math.random() * 2 - 1
+        );
     }
 
     update(delta) {
+        const [newState, force] = this.behavior.call(this);
+        if (newState !== this.aiState) {
+            console.log("State changed from " + this.aiState + " to " + newState)
+            this.aiState = newState;
+            this.behavior = behaviours[this.aiState];
+        } else {
+            this.applyForce(force.clone().sub(this.velocity).clampLength(0, 4000));
+        }
+
+        const p0 = this.target.position.clone();
+        const v0 = this.target.velocity.clone();
+        const a0 = this.target.velocity.clone().sub(this.previousTargetVelocity).divideScalar(delta);
+        this.previousTargetVelocity = this.target.velocity.clone();
+
+        let futureDelta = this.gunForce.length() / this.target.position.distanceTo(this.position);
+
+        const future = p0.clone().add(v0.clone().multiplyScalar(futureDelta)).add(a0.clone().multiplyScalar(futureDelta * futureDelta / 2));
+        this.gfx.lookAt(future);
+
         super.update(delta);
 
-        this.shooting = this.target.position.distanceTo(this.position) < 200;
+        this.shooting = this.position.distanceTo(this.target.position) < 200;
         if (this.shooting) {
-            if (this.magazine <= 0 && this.magazineReloadSum < this.reloadTime) {
-                this.magazineReloadSum += delta;
-            } else if (this.magazine <= 0 && this.magazineReloadSum >= this.reloadTime) {
-                this.magazine = this.magazineSize;
-                this.magazineReloadSum = 0;
-            } else if (this.shootingDelaySum >= this.shootingDelay) {
+            if (this.shootingDelaySum <= 0) {
                 this.shoot();
-                this.shootingDelaySum = 0;
+                this.shootingDelaySum = this.shootingDelay;
             } else {
-                this.shootingDelaySum += delta;
+                this.shootingDelaySum -= delta;
             }
         }
     }
@@ -45,13 +139,15 @@ export default class Enemy extends EnemyBody {
     shoot() {
         new SoundFX("shot").play();
 
+        let gunForce = this.gunForce.clone().add(this.randomVector3().multiplyScalar(this.shootingSpread));
+
         let bullet = new Bullet(
             this.gfx.localToWorld(this.gunPoint.clone()),
             1,
-            0xff0000,
-            this.gfx.localToWorld(this.gunForce.clone()).sub(this.gfx.localToWorld(this.gunPoint.clone())),
-            this.win.scene
+            0x0000ff,
+            this.gfx.localToWorld(gunForce).sub(this.gfx.localToWorld(this.gunPoint.clone())),
+            this.window.scene
         );
-        this.win.addObject(bullet);
+        this.window.addObject(bullet);
     }
 }

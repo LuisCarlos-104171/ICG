@@ -1,7 +1,6 @@
 import * as THREE from "three";
 import Body from "../body.module.js";
 import MeshCollider from "../colliders/meshCollider.module.js";
-import Bullet from "./bullet.module.js";
 import Models from "../models.module.js";
 import Player from "../entities/player.module.js";
 import SoundFX from "../sounds/soundFX.module.js";
@@ -78,7 +77,7 @@ export default class Asteroid extends Body {
 
     onCollision(other) {
         if (other.obj instanceof Player) {
-            this.takeDamage(0.2 * other.obj.velocity.length());
+            this.damage(0.2 * other.obj.velocity.length());
             other.obj.damage(0.2 * other.obj.velocity.length());
         }
 

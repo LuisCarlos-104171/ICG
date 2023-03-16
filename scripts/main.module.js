@@ -64,7 +64,7 @@ function run() {
         window.scene.add(ambientLight);
 
         camera.onModelsLoaded();
-        const enemy = new Enemy(new THREE.Vector3(0, 0, -100), camera, window);
+        const enemy = new Enemy(new THREE.Vector3(0, 0, -300), camera, window);
         window.addObject(enemy);
         requestAnimationFrame(updateLoop);
     });
