@@ -43,8 +43,7 @@ export default class Gun extends Input {
             this.player.gfx.localToWorld(this.throwPoint.clone()),
             1,
             0xff0000,
-            this.player.gfx.localToWorld(this.throwForce.clone()).sub(this.player.gfx.localToWorld(this.throwPoint.clone())),
-            this.win.scene
+            this.player.gfx.localToWorld(this.throwForce.clone()).sub(this.player.gfx.localToWorld(this.throwPoint.clone()))
         );
         this.win.addObject(bullet);
     }

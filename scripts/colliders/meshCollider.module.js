@@ -1,6 +1,7 @@
 import * as THREE from "three";
 import OctTree from "../octree/octree.module.js";
 import Boundary from "../octree/boundary.module.js";
+import Window from "../window.module.js";
 
 function calculateMinMax(object, scale = new THREE.Vector3(1, 1, 1)) {
     let currentMin = new THREE.Vector3(Infinity, Infinity, Infinity);
@@ -154,10 +155,10 @@ export default class MeshCollider {
 
     }
 
-    static debug(scene) {
+    static debug() {
         for (const collider of MeshCollider.colliders.allColliders) {
             const box = new THREE.Box3Helper(collider.box, 0xff0000);
-            scene.add(box);
+            Window.scene.add(box);
         }
     }
 }

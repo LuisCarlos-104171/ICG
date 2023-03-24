@@ -67,7 +67,7 @@ function run() {
 
 
         let ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
-        window.scene.add(ambientLight);
+        Window.scene.add(ambientLight);
 
         camera.onModelsLoaded();
         const enemy = new Enemy(new THREE.Vector3(0, 0, -300), camera, window);

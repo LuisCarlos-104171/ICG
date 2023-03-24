@@ -1,4 +1,5 @@
 import Input from "./input/input.module.js";
+import Window from "./window.module.js";
 import * as THREE from "three";
 
 export default class Renderer extends Input {
@@ -19,7 +20,7 @@ export default class Renderer extends Input {
         }
     }
 
-    render(scene, camera) {
-        this.renderer.render(scene, camera);
+    render(camera) {
+        this.renderer.render(Window.scene, camera);
     }
 }

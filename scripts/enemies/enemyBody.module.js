@@ -3,17 +3,21 @@ import Constants from "../constants.module.js";
 import MeshCollider from "../colliders/meshCollider.module.js";
 import * as THREE from 'three';
 import Models from "../models.module.js";
+import Window from "../window.module.js";
 
 export default class EnemyBody extends Body {
-    constructor(position, target, window) {
+    constructor(position, target) {
         super(new THREE.Vector3(10, 10, 10), 100, position);
         this.target = target;
         this.gfx = Models.enemy01.clone();
 
         this.gfx.position.copy(this.position);
         this.collider = new MeshCollider(this, this.gfx, false);
+
         this.health = 100;
-        this.window = window;
+
+        this.locked = false;
+        this.isLockable = true;
     }
 
     update(delta) {
@@ -30,9 +34,10 @@ export default class EnemyBody extends Body {
     }
 
     destroy() {
-        this.window.scene.remove(this.gfx);
+        Window.scene.remove(this.gfx);
         super.destroy();
         this.collider.destroy();
+        this.locked = false;
     }
 
     damage(amount) {

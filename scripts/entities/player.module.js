@@ -4,6 +4,7 @@ import Constants from "../constants.module.js";
 import physics from "../physics.module.js";
 import MeshCollider from "../colliders/meshCollider.module.js";
 import Models from "../models.module.js";
+import Window from "../window.module.js";
 
 
 export default class Player extends Input {
@@ -45,6 +46,10 @@ export default class Player extends Input {
         this.healthBar = document.getElementById("healthBar");
         this.healthDiv = document.getElementById("health");
         this.deathScreen = document.getElementById("deathScreen");
+
+        this.window = window;
+
+        this.locked = null;
     }
 
     addForce(force) {
@@ -151,5 +156,30 @@ export default class Player extends Input {
     die() {
         this.deathScreen.style.display = "flex";
         this.dead = true;
+    }
+
+    update(event, data) {
+        if (event === "keydown" && data.key === "f") {
+            this.lock();
+        }
+    }
+
+    lock() {
+        const ray = new THREE.Raycaster(new THREE.Vector3(0, 0, -5).applyQuaternion(this.rotation).add(this.position), new THREE.Vector3(0, 0, -1).applyQuaternion(this.rotation).normalize(), 0, 1000);
+        const intersects = ray.intersectObjects(Window.scene.children, true);
+
+        while (intersects.length > 0) {
+            const closest = intersects.sort((a, b) => a.distance - b.distance)[0];
+            intersects.pop(closest);
+
+            const obj = closest.object;
+            const object = MeshCollider.colliders.findCollider(obj);
+
+            if (object && object.obj.isLockable) {
+                this.locked = object;
+                this.locked.obj.locked = true;
+                break;
+            }
+        }
     }
 }

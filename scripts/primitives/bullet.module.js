@@ -1,10 +1,11 @@
 import * as THREE from "three";
 import Body from "../body.module.js";
 import MeshCollider from "../colliders/meshCollider.module.js";
+import Window from "../window.module.js";
 
 
 export default class Bullet extends Body {
-    constructor(position, size, color, initialForce, scene) {
+    constructor(position, size, color, initialForce) {
         super(new THREE.Vector3(size, size, size), 0.01, position);
 
         this.velocity = initialForce.clone();
@@ -17,7 +18,6 @@ export default class Bullet extends Body {
         this.gfx.position.set(position.x, position.y, position.z);
         this.collider = new MeshCollider(this, this.gfx, false, this.destroy.bind(this));
         this.startTime = Date.now();
-        this.scene = scene;
 
         this.damage = 5;
     }
@@ -35,7 +35,7 @@ export default class Bullet extends Body {
         if (other && other.obj.hasOwnProperty("health"))
             other.obj.damage(this.damage);
 
-        this.scene.remove(this.gfx);
+        Window.scene.remove(this.gfx);
         super.destroy();
         this.collider.destroy();
         return false;

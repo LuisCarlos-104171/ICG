@@ -6,13 +6,19 @@ import PauseControl from "./pauseControl.module.js";
 import Renderer from "./renderer.module.js";
 
 export default class Window {
+    static scene = null;
+
     constructor(camera) {
-        this.scene = new THREE.Scene();
+        if (Window.scene) {
+            throw new Error("Window already exists");
+        }
+
+        Window.scene = new THREE.Scene();
         this.renderer = new Renderer();
 
         this.camera = camera;
-        this.scene.fog = new THREE.Fog(0x000000, 350, 450);
-        this.scene.add(camera.skybox);
+        Window.scene.fog = new THREE.Fog(0x000000, 350, 450);
+        Window.scene.add(camera.skybox);
         this.addObject(camera);
 
         this.pause = new PauseControl();
@@ -27,7 +33,7 @@ export default class Window {
     }
 
     addObject(object) {
-        this.scene.add(object.gfx);
+        Window.scene.add(object.gfx);
     }
 
     tick(delta) {
@@ -45,6 +51,6 @@ export default class Window {
     }
 
     render() {
-         this.renderer.render(this.scene, this.camera.camera);
+         this.renderer.render(this.camera.camera);
     }
 }

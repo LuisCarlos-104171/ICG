@@ -130,4 +130,20 @@ export default class OctTree {
         }
         return found.filter(f => (f[0].id === p1.id && f[1].id === p2.id) || (f[0].id === p2.id && f[1].id === p1.id)).length === 0;
     }
+
+    getGroupIds(obj) {
+        let ids = [obj.id];
+        for (let child of obj.children) {
+            ids.push(...this.getGroupIds(child));
+        }
+        return ids;
+    }
+
+    findCollider(mesh) {
+        for (let collider of this.allColliders) {
+            if (this.getGroupIds(collider.mesh).some(id => id === mesh.id)) {
+                return collider;
+            }
+        }
+    }
 }

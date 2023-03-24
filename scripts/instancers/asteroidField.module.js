@@ -51,7 +51,7 @@ export default class AsteroidField {
                 this.gaussianRandom(0, 10)
             ).normalize().multiplyScalar(this.randomInRange(200, 500)).add(this.player.position);
 
-            let asteroid = new Asteroid(position, size, this.win);
+            let asteroid = new Asteroid(position, size);
 
             asteroid.velocity = this.randomUnitVector().multiplyScalar(Math.random() * 5 + 5);
             this.asteroids.push(asteroid);

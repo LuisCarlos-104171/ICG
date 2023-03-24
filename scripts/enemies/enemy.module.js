@@ -78,12 +78,13 @@ const behaviours = [
 
 export default class Enemy extends EnemyBody {
     constructor(position, target, window) {
-        super(position, target, window);
+        super(position, target);
 
         this.gunPoint = new THREE.Vector3(0, 0, 20);
         this.gunForce = new THREE.Vector3(0, 0, 500);
 
         this.shooting = false;
+        this.window = window;
 
         this.shootingDelay = 0.1;
         this.shootingDelaySum = 0;
@@ -145,8 +146,7 @@ export default class Enemy extends EnemyBody {
             this.gfx.localToWorld(this.gunPoint.clone()),
             1,
             0x0000ff,
-            this.gfx.localToWorld(gunForce).sub(this.gfx.localToWorld(this.gunPoint.clone())),
-            this.window.scene
+            this.gfx.localToWorld(gunForce).sub(this.gfx.localToWorld(this.gunPoint.clone()))
         );
         this.window.addObject(bullet);
     }

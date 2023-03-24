@@ -41,6 +41,8 @@ export default class Camera extends Player {
         this.angularVelocity = new THREE.Vector3(0, 0, 0);
 
         this.cameraSpeed = 0.1;
+
+        this.lockDiv = document.getElementById("lock");
     }
 
     onModelsLoaded() {
@@ -150,5 +152,61 @@ export default class Camera extends Player {
         this.skybox.position.x = this.position.x;
         this.skybox.position.y = this.position.y;
         this.skybox.position.z = this.position.z;
+
+        if (this.locked && this.locked.obj.position.distanceTo(this.position) > 30) {
+            const collider = this.locked.box;
+
+            const cube = [
+                new THREE.Vector3(collider.min.x, collider.min.y, collider.min.z),
+                new THREE.Vector3(collider.min.x, collider.min.y, collider.max.z),
+                new THREE.Vector3(collider.min.x, collider.max.y, collider.min.z),
+                new THREE.Vector3(collider.min.x, collider.max.y, collider.max.z),
+                new THREE.Vector3(collider.max.x, collider.min.y, collider.min.z),
+                new THREE.Vector3(collider.max.x, collider.min.y, collider.max.z),
+                new THREE.Vector3(collider.max.x, collider.max.y, collider.min.z),
+                new THREE.Vector3(collider.max.x, collider.max.y, collider.max.z)
+            ];
+
+            const cubeProjections = cube.map(point => {
+                let newPoint = point.clone().project(this.camera);
+                newPoint.x = (newPoint.x + 1) / 2 * window.innerWidth;
+                newPoint.y = -(newPoint.y - 1) / 2 * window.innerHeight;
+                return newPoint;
+            });
+
+            let maxArea = 0
+            const topLeftPoint = new THREE.Vector2();
+            let side = 0;
+
+            for (let p1 of cubeProjections) {
+                for (let p2 of cubeProjections) {
+                    if (p1 === p2) {
+                        continue;
+                    }
+
+                    const area = Math.abs(p1.x - p2.x) * Math.abs(p1.y - p2.y);
+                    if (area > maxArea) {
+                        maxArea = area;
+                        topLeftPoint.x = Math.min(p1.x, p2.x);
+                        topLeftPoint.y = Math.min(p1.y, p2.y);
+
+                        side = Math.max(Math.abs(p1.x - p2.x), Math.abs(p1.y - p2.y));
+                    }
+                }
+            }
+
+            this.lockDiv.style.display = "block";
+            this.lockDiv.style.left = Math.round(topLeftPoint.x - 10).toString() + "px";
+            this.lockDiv.style.top = Math.round(topLeftPoint.y - 10).toString() + "px";
+            this.lockDiv.style.width = Math.round(side + 10).toString() + "px";
+            this.lockDiv.style.height = Math.round(side + 10).toString() + "px";
+        } else {
+            this.lockDiv.style.display = "none";
+        }
+
+        if (this.locked && !this.locked.obj.locked) {
+            this.locked = null;
+            this.lockDiv.style.display = "none";
+        }
     }
 }
