@@ -43,6 +43,14 @@ export default class Camera extends Player {
         this.cameraSpeed = 0.1;
 
         this.lockDiv = document.getElementById("lock");
+
+        this.targetPositionXElement = document.getElementById("targetPositionX");
+        this.targetPositionYElement = document.getElementById("targetPositionY");
+        this.targetPositionZElement = document.getElementById("targetPositionZ");
+
+        this.targetRelativeVelocityXElement = document.getElementById("targetRelativeVelocityX");
+        this.targetRelativeVelocityYElement = document.getElementById("targetRelativeVelocityY");
+        this.targetRelativeVelocityZElement = document.getElementById("targetRelativeVelocityZ");
     }
 
     onModelsLoaded() {
@@ -200,6 +208,14 @@ export default class Camera extends Player {
             this.lockDiv.style.top = Math.round(topLeftPoint.y - 10).toString() + "px";
             this.lockDiv.style.width = Math.round(side + 10).toString() + "px";
             this.lockDiv.style.height = Math.round(side + 10).toString() + "px";
+
+            this.targetPositionXElement.innerHTML = (Math.round(this.locked.obj.position.x * 10) / 10).toString();
+            this.targetPositionYElement.innerHTML = (Math.round(this.locked.obj.position.y * 10) / 10).toString();
+            this.targetPositionZElement.innerHTML = (Math.round(this.locked.obj.position.z * 10) / 10).toString();
+
+            this.targetRelativeVelocityXElement.innerHTML = (Math.round((this.velocity.x - this.locked.obj.velocity.x) * 10) / 10).toString();
+            this.targetRelativeVelocityYElement.innerHTML = (Math.round((this.velocity.y - this.locked.obj.velocity.y) * 10) / 10).toString();
+            this.targetRelativeVelocityZElement.innerHTML = (Math.round((this.velocity.z - this.locked.obj.velocity.z) * 10) / 10).toString();
         } else {
             this.lockDiv.style.display = "none";
         }

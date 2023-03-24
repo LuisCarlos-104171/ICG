@@ -37,7 +37,7 @@ body {
     display: none;
     background-image: url("images/scope.svg");
 
-    z-index: 1000000;
+    z-index: 100000;
 }
 
 #UI {
@@ -87,6 +87,17 @@ body {
     background-color: rgba(255, 255, 255, 0.1);
 }
 
+.target-speedometer {
+    position: absolute;
+    color: #bbb89b;
+
+    bottom: 50%;
+    transform: translateY(50%);
+    left: 100%;
+
+    background-color: rgba(255, 255, 255, 0.1);
+}
+
 .group {
     display: flex;
 }
@@ -95,7 +106,7 @@ body {
     font-size: 1rem;
     align-self: center;
     padding: 5px;
-    width: 12ch;
+    width: 20ch;
     margin: 0;
 }
 
