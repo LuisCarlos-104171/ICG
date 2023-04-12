@@ -70,8 +70,13 @@ function run() {
         Window.scene.add(ambientLight);
 
         camera.onModelsLoaded();
+
         const enemy = new Enemy(new THREE.Vector3(0, 0, -300), camera, window);
         window.addObject(enemy);
+
+        const enemy2 = new Enemy(new THREE.Vector3(0, 0, 300), camera, window);
+        window.addObject(enemy2);
+
         requestAnimationFrame(updateLoop);
     });
 

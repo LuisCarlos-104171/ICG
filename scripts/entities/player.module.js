@@ -165,7 +165,7 @@ export default class Player extends Input {
     }
 
     lock() {
-        const ray = new THREE.Raycaster(new THREE.Vector3(0, 0, -5).applyQuaternion(this.rotation).add(this.position), new THREE.Vector3(0, 0, -1).applyQuaternion(this.rotation).normalize(), 0, 1000);
+        const ray = new THREE.Raycaster(new THREE.Vector3(0, 0, -10).applyQuaternion(this.rotation).add(this.position), new THREE.Vector3(0, 0, -1).applyQuaternion(this.rotation).normalize(), 0, 1000);
         const intersects = ray.intersectObjects(Window.scene.children, true);
 
         while (intersects.length > 0) {

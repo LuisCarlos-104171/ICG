@@ -14,7 +14,8 @@ export default class EnemyBody extends Body {
         this.gfx.position.copy(this.position);
         this.collider = new MeshCollider(this, this.gfx, false);
 
-        this.health = 100;
+        this.maxHealth = 100;
+        this.health = this.maxHealth;
 
         this.locked = false;
         this.isLockable = true;

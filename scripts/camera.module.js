@@ -51,6 +51,15 @@ export default class Camera extends Player {
         this.targetRelativeVelocityXElement = document.getElementById("targetRelativeVelocityX");
         this.targetRelativeVelocityYElement = document.getElementById("targetRelativeVelocityY");
         this.targetRelativeVelocityZElement = document.getElementById("targetRelativeVelocityZ");
+
+        this.targetHealthBarElement = document.getElementById("targetHealthBar");
+
+        this.aimElement = document.getElementById("aim");
+
+        const end = this.camera.localToWorld(new THREE.Vector3(0, 0, -2000));
+        const middle = end.project(this.camera);
+        this.aimElement.style.left = `${(middle.x + 1) / 2 * window.innerWidth}px`;
+        this.aimElement.style.top = `${-(middle.y - 1) / 2 * window.innerHeight}px`;
     }
 
     onModelsLoaded() {
@@ -96,6 +105,11 @@ export default class Camera extends Player {
                 this.speedometer.style.left = "0";
                 this.speedometer.style.bottom = "10%";
                 this.speedometer.style.transform = "translate(0, 0)";
+
+                const end = this.camera.localToWorld(new THREE.Vector3(0, 0, -2000));
+                const middle = end.project(this.camera);
+                this.aimElement.style.left = `${(middle.x + 1) / 2 * window.innerWidth}px`;
+                this.aimElement.style.top = `${-(middle.y - 1) / 2 * window.innerHeight}px`;
             }
         }
 
@@ -105,6 +119,11 @@ export default class Camera extends Player {
                 this.speedometer.style.left = "50%";
                 this.speedometer.style.bottom = "20%";
                 this.speedometer.style.transform = "translate(-50%, 0)";
+
+                const end = this.camera.localToWorld(new THREE.Vector3(0, 0, -2000));
+                const middle = end.project(this.camera);
+                this.aimElement.style.left = `${(middle.x + 1) / 2 * window.innerWidth}px`;
+                this.aimElement.style.top = `${-(middle.y - 1) / 2 * window.innerHeight}px`;
             }
         }
 
@@ -216,6 +235,8 @@ export default class Camera extends Player {
             this.targetRelativeVelocityXElement.innerHTML = (Math.round((this.velocity.x - this.locked.obj.velocity.x) * 10) / 10).toString();
             this.targetRelativeVelocityYElement.innerHTML = (Math.round((this.velocity.y - this.locked.obj.velocity.y) * 10) / 10).toString();
             this.targetRelativeVelocityZElement.innerHTML = (Math.round((this.velocity.z - this.locked.obj.velocity.z) * 10) / 10).toString();
+
+            this.targetHealthBarElement.style.width = Math.round(this.locked.obj.health / this.locked.obj.maxHealth * 100).toString() + "%";
         } else {
             this.lockDiv.style.display = "none";
         }

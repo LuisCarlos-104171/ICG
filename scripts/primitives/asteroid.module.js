@@ -22,7 +22,8 @@ export default class Asteroid extends Body {
             }
         }
 
-        this.health = 100;
+        this.maxHealth = 100;
+        this.health = this.maxHealth;
         this.dead = false;
 
         this.gfx.position.set(position.x, position.y, position.z);
