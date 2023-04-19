@@ -5,7 +5,7 @@ import Window from "../window.module.js";
 
 
 export default class Bullet extends Body {
-    constructor(position, size, color, initialForce) {
+    constructor(position, size, color, initialForce, damage = 5) {
         super(new THREE.Vector3(size, size, size), 0.01, position);
 
         this.velocity = initialForce.clone();
@@ -19,7 +19,7 @@ export default class Bullet extends Body {
         this.collider = new MeshCollider(this, this.gfx, false, this.destroy.bind(this));
         this.startTime = Date.now();
 
-        this.damage = 5;
+        this.damage = damage;
     }
 
     update(delta) {

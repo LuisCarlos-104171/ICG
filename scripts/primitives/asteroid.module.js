@@ -5,6 +5,7 @@ import Models from "../models.module.js";
 import Player from "../entities/player.module.js";
 import SoundFX from "../sounds/soundFX.module.js";
 import Window from "../window.module.js";
+import Store from "../store/store.module.js";
 
 
 export default class Asteroid extends Body {
@@ -36,6 +37,8 @@ export default class Asteroid extends Body {
 
         this.locked = false;
         this.isLockable = true;
+
+        this.miningRate = 2;
     }
 
     update(delta) {
@@ -76,13 +79,15 @@ export default class Asteroid extends Body {
         if (this.health <= 0) {
             this.dead = true;
             this.locked = false;
+
+            Store.cash += 10;
         }
     }
 
     onCollision(other) {
         if (other.obj instanceof Player) {
-            this.damage(0.2 * other.obj.velocity.length());
-            other.obj.damage(0.2 * other.obj.velocity.length());
+            this.damage(2 * other.obj.velocity.length());
+            other.obj.damage(2 * other.obj.velocity.length());
         }
 
         return true;

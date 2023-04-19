@@ -1,7 +1,7 @@
 body {
     margin: 0;
     padding: 0;
-
+    position: relative;
     box-sizing: border-box;
 
     overflow: hidden;
@@ -14,7 +14,7 @@ body {
     bottom: 0;
     right: 0;
 
-    z-index: 1000000;
+    z-index: 150;
 
     background-color: #867575;
     color: #bbb89b;
@@ -209,4 +209,56 @@ body {
 
     width: 10px;
     height: 10px;
+}
+
+.store {
+    position: absolute;
+    top: 3%;
+    right: 3%;
+
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+}
+
+.store > h1 {
+    font-size: 1.2rem;
+}
+
+#level {
+    width: 100%;
+    height: 100%;
+
+    text-align: center;
+}
+
+#cash {
+    width: 100%;
+    height: 100%;
+
+    text-align: center;
+}
+
+#score {
+    width: 100%;
+    height: 100%;
+
+    text-align: center;
+}
+
+#storeFront {
+    position: absolute;
+    top: 0;
+    left: 0;
+    z-index: 220;
+    color: white;
+}
+
+#touchEvent {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 200;
 }

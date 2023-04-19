@@ -12,12 +12,12 @@ export default class Camera extends Player {
         this.skybox = new THREE.Mesh(
             new THREE.BoxGeometry(1000, 1000, 1000),
             [
-                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_ft.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_bk.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_up.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_dn.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_rt.png"), side: THREE.DoubleSide }),
-                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_lf.png"), side: THREE.DoubleSide })
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_ft.png"), side: THREE.BackSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_bk.png"), side: THREE.BackSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_up.png"), side: THREE.BackSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_dn.png"), side: THREE.BackSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_rt.png"), side: THREE.BackSide }),
+                new THREE.MeshBasicMaterial({ fog: false, map: new THREE.TextureLoader().load("images/skybox/corona_lf.png"), side: THREE.BackSide })
             ]
         );
 
@@ -89,7 +89,7 @@ export default class Camera extends Player {
     update(event, data) {
         super.update(event, data);
 
-        if (event === "mouseclick") {
+        if (event === "mouseclick" && data.target === document.getElementById("touchEvent")) {
             Input.requestPointerLock();
             if (!Camera.audioListener) {
                 Camera.audioListener = new THREE.AudioListener();

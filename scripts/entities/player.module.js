@@ -5,6 +5,8 @@ import physics from "../physics.module.js";
 import MeshCollider from "../colliders/meshCollider.module.js";
 import Models from "../models.module.js";
 import Window from "../window.module.js";
+import Store from "../store/store.module.js";
+import Asteroid from "../primitives/asteroid.module.js";
 
 
 export default class Player extends Input {
@@ -17,7 +19,6 @@ export default class Player extends Input {
 
         this.Cr = 0.6;
         this.mass = 100;
-        this.maxHealth = 500;
         this.health = this.maxHealth;
 
         this.regenRate = 20;
@@ -50,6 +51,13 @@ export default class Player extends Input {
         this.window = window;
 
         this.locked = null;
+
+        this.mining = false;
+        this.miningElement = document.getElementById("mining");
+    }
+
+    get maxHealth() {
+        return 300 + Store.upgrades.health * 100;
     }
 
     addForce(force) {
@@ -102,6 +110,14 @@ export default class Player extends Input {
             this.movement.y += 1;
         }
 
+        if (this.locked && Input.isPressed("c") && this.locked.obj instanceof Asteroid) {
+            this.mining = true;
+        }
+
+        if (this.mining && this.locked && this.locked.obj.position.distanceTo(this.position) > 200) {
+            this.mining = false;
+        }
+
         const uiMovement = this.movement.normalize();
         const uiScale = -uiMovement.z * 1.5 + 100;
         const uiX = -uiMovement.x * 2;
@@ -136,6 +152,17 @@ export default class Player extends Input {
         this.xPlayerAccelerationElement.innerText = (Math.round(this.acceleration.x * 10) / 10).toString();
         this.yPlayerAccelerationElement.innerText = (Math.round(this.acceleration.y * 10) / 10).toString();
         this.zPlayerAccelerationElement.innerText = (Math.round(this.acceleration.z * 10) / 10).toString();
+
+        if (this.mining && this.locked) {
+            Store.cash += (this.locked.obj.miningRate * Store.upgrades.mining * 0.1) * delta;
+            this.miningElement.innerText = "Mining";
+        } else {
+            this.miningElement.innerText = "Not Mining";
+        }
+    }
+
+    get getDamage() {
+        return 5 + Store.upgrades.damage * 2;
     }
 
     calculatePercentage() {
