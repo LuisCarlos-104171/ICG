@@ -10,12 +10,6 @@ jobs:
         runs-on: ubuntu-latest
         steps:
           - uses: actions/checkout@v2
-          - name: Init new repo in dist folder
-            run: |
-              git config --global user.name "github-actions[bot]"
-              git config --global user.email "action@github.com"
-              git add .
-              git commit -m "Deploy to GitHub Pages"
           - name: Force push to gh-pages
             uses: ad-m/github-push-action@master
             with:
