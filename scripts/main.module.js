@@ -68,7 +68,7 @@ function run() {
         new EnemyManager(camera, window);
         new StoreUI();
 
-        let ambientLight = new THREE.AmbientLight(0xffffff, 0.2);
+        let ambientLight = new THREE.AmbientLight(0xffffff, 0.3);
         Window.scene.add(ambientLight);
 
         camera.onModelsLoaded();
