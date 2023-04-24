@@ -7,6 +7,7 @@ import Models from "../models.module.js";
 import Window from "../window.module.js";
 import Store from "../store/store.module.js";
 import Asteroid from "../primitives/asteroid.module.js";
+import StoreUI from "../store/storeUI.module.js";
 
 
 export default class Player extends Input {
@@ -182,6 +183,7 @@ export default class Player extends Input {
 
     die() {
         this.deathScreen.style.display = "flex";
+        StoreUI.close();
         this.dead = true;
     }
 

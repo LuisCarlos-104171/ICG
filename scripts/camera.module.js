@@ -180,7 +180,7 @@ export default class Camera extends Player {
         this.skybox.position.y = this.position.y;
         this.skybox.position.z = this.position.z;
 
-        if (this.locked && this.locked.obj.position.distanceTo(this.position) > 30) {
+        if (this.locked && this.locked.obj.position.distanceTo(this.position) > 100) {
             const collider = this.locked.box;
 
             const cube = [

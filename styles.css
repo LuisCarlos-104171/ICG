@@ -248,10 +248,51 @@ body {
 
 #storeFront {
     position: absolute;
-    top: 0;
-    left: 0;
+
+    top: 6%;
+    left: 2%;
+
     z-index: 220;
+
     color: white;
+}
+
+.upgrade {
+    display: grid;
+
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+}
+
+.upgradeButton {
+    background-color: rgba(255, 255, 255, 0.1);
+    color: white;
+
+    border: 2px solid rgba(255, 255, 255, 0.5);
+
+    padding: 5px;
+
+    text-align: center;
+}
+
+.upgradeButton:hover {
+    background-color: rgba(255, 255, 255, 0.35);
+}
+
+.upgradeCost,
+.upgradeName,
+.upgradeLevel {
+    text-align: left;
+    align-self: center;
+
+    padding: 5px;
+}
+
+.upgradeCost::before {
+    content: "$";
+}
+
+.upgradeLevel::before {
+    content: "Level: ";
 }
 
 #touchEvent {
