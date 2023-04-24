@@ -1,5 +1,6 @@
 export default {
     // PHYSIC PROPERTIES
     PLAYER_FRICTION: 0.2,
-    PLAYER_MAX_SPEED: 50,
+    PLAYER_MAX_SPEED: 100,
+    BULLET_MASS: 0.01,
 }

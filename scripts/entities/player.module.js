@@ -57,7 +57,7 @@ export default class Player extends Input {
     }
 
     get maxHealth() {
-        return 300 + Store.upgrades.health * 100;
+        return 150 + Store.upgrades.health * 100;
     }
 
     addForce(force) {

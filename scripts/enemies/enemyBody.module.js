@@ -24,6 +24,7 @@ export default class EnemyBody extends Body {
     update(delta) {
         // apply physics
         super.update(delta);
+
         // limit speed
         this.velocity.x = Math.min(Math.max(this.velocity.x, -Constants.PLAYER_MAX_SPEED + 10), Constants.PLAYER_MAX_SPEED - 10);
         this.velocity.y = Math.min(Math.max(this.velocity.y, -Constants.PLAYER_MAX_SPEED + 10), Constants.PLAYER_MAX_SPEED - 10);

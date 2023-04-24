@@ -2,6 +2,7 @@ import EnemyBody from "./enemyBody.module.js";
 import SoundFX from "../sounds/soundFX.module.js";
 import Bullet from "../primitives/bullet.module.js";
 import * as THREE from 'three';
+import Constants from "../constants.module.js";
 
 
 const states = {
@@ -23,7 +24,7 @@ const behaviours = [
 
         const desire = this.position.clone().sub(this.target.position).normalize();
         const dx = desire.length()
-        if (dx < 200) {
+        if (dx < 400) {
             desire.multiplyScalar(linearMapping(dx, 150, 200, -8000, 8000));
         } else {
             desire.multiplyScalar(4000);
@@ -36,7 +37,7 @@ const behaviours = [
     },
     function attacking() {
         const dst = this.target.position.distanceTo(this.position);
-        if (dst > 200) {
+        if (dst > 400) {
             return [states.PURSUING, null]
         }
 
@@ -53,7 +54,6 @@ const behaviours = [
             .normalize()
             .multiplyScalar(linearMapping(dstToTarget, minDst, maxDst, 7000, -7000));
 
-
         return [
             states.ATTACKING,
             desire
@@ -69,6 +69,7 @@ const behaviours = [
         desire
             .normalize()
             .multiplyScalar(linearMapping(dx, 0, 400, 8000, -8000));
+
         return [
             states.RETREATING,
             desire
@@ -112,17 +113,20 @@ export default class Enemy extends EnemyBody {
             this.applyForce(force.clone().sub(this.velocity).clampLength(0, 4000));
         }
 
-        const pp = this.position.clone().add(this.gunPoint);
-        const vp = this.gfx.localToWorld(this.gunForce.clone()).sub(this.gfx.localToWorld(this.gunPoint.clone()))
 
-        const pt = this.target.position.clone();
-        const vt = this.target.velocity.clone();
+        const VB = this.gunForce.clone().divideScalar(Constants.BULLET_MASS);
+        const V2 = this.target.velocity.clone();
 
-        const vr = vt.clone().sub(vp);
-        const t = pp.distanceTo(pt) / vr.length();
+        const P1 = this.position.clone();
+        const P2 = this.target.position.clone();
 
-        const pi = pt.clone().add(vr.clone().multiplyScalar(t));
-        this.gfx.lookAt(pi);
+        const VBP2 = VB.clone().multiply(P2);
+        const V2P1 = V2.clone().multiply(P1);
+
+        const VBV2 = VB.clone().add(V2);
+
+        const PI = V2P1.clone().sub(VBP2).divide(VBV2);
+        this.gfx.lookAt(PI);
 
         super.update(delta);
 

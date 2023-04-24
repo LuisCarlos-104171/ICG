@@ -2,11 +2,12 @@ import * as THREE from "three";
 import Body from "../body.module.js";
 import MeshCollider from "../colliders/meshCollider.module.js";
 import Window from "../window.module.js";
+import Constants from "../constants.module.js";
 
 
 export default class Bullet extends Body {
     constructor(position, size, color, initialForce, damage = 5) {
-        super(new THREE.Vector3(size, size, size), 0.01, position);
+        super(new THREE.Vector3(size, size, size), Constants.BULLET_MASS, position);
 
         this.velocity = initialForce.clone();
 

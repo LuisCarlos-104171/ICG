@@ -2,7 +2,7 @@ export default class Store {
     static state = {
         score: 0,
         level: 0,
-        cash: 100,
+        cash: 10,
         upgrades: {
             health: 1,
             damage: 1,
