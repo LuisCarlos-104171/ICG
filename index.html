@@ -1,107 +1,48 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Title</title>
 
-    <link rel="stylesheet" href="styles.css">
-    <title>ICG - Final Project</title>
-</head>
-<body>
-    <div class="screen" id="loading_screen">
-        <h1>Loading...</h1>
-    </div>
-    <div class="screen" style="display: none" id="deathScreen">
-        <h1>You died!</h1>
-    </div>
-
-    <div id="lock">
-        <div class="target-speedometer">
-            <div class="target-health">
-                <div id="targetHealthBar"></div>
-            </div>
-            <p>We are currently <b id="mining"></b></p>
-            <div class="group">
-                <h1>Position</h1>
-                <p class="group_x" id="targetPositionX">0</p>
-                <p class="group_y" id="targetPositionY">0</p>
-                <p class="group_z" id="targetPositionZ">0</p>
-            </div>
-            <div class="group">
-                <h1>Relative Velocity</h1>
-                <p class="group_x" id="targetRelativeVelocityX">0</p>
-                <p class="group_y" id="targetRelativeVelocityY">0</p>
-                <p class="group_z" id="targetRelativeVelocityZ">0</p>
-            </div>
-        </div>
-    </div>
-
-    <div id="aim">
-
-    </div>
-
-    <div id="touchEvent">
-    </div>
-
-    <div id="storeFront">
-    </div>
-
-    <div id="UI">
-        <p id="fps"></p>
-        <div class="store">
-            <h1>Score</h1>
-            <p id="score"></p>
-
-            <h1>Level</h1>
-            <p id="level"></p>
-
-            <h1>Cash</h1>
-            <p id="cash"></p>
-        </div>
-
-        <div id="pause_controls">
-            <h1>Game Paused!</h1>
-        </div>
-
-        <div id="health">
-            <div id="healthBar"></div>
-        </div>
-
-        <div class="speedometer" id="speedometer">
-            <div class="group">
-                <h1>Position</h1>
-                <p class="group_x" id="playerPositionX">0</p>
-                <p class="group_y" id="playerPositionY">0</p>
-                <p class="group_z" id="playerPositionZ">0</p>
-            </div>
-            <div class="group">
-                <h1>Velocity</h1>
-                <p class="group_x" id="playerVelocityX">0</p>
-                <p class="group_y" id="playerVelocityY">0</p>
-                <p class="group_z" id="playerVelocityZ">0</p>
-            </div>
-            <div class="group">
-                <h1>Acceleration</h1>
-                <p class="group_x" id="playerAccelerationX">0</p>
-                <p class="group_y" id="playerAccelerationY">0</p>
-                <p class="group_z" id="playerAccelerationZ">0</p>
-            </div>
-        </div>
-    </div>
-
-    <!-- import maps -->
-    <script type="importmap">
-        {
-            "imports": {
-                "three": "./threejs-source/build/three.module.js",
-                "addons/": "./threejs-source/examples/jsm/"
-            }
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <style>
+        html, body {
+            height: 100%;
         }
-    </script>
-
-    <!-- import modules -->
-    <script type="module" src="scripts/main.module.js"></script>
+        body {
+            display: flex;
+            flex-direction: column;
+        }
+        main {
+            flex: 1;
+        }
+    </style>
+</head>
+<body class="bg-gray-100">
+<header class="bg-white shadow-lg">
+    <div class="container mx-auto py-4 px-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-gray-800">Space Odyssey: A New Hope</h1>
+        <nav>
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-gray-600 hover:text-gray-800">Home</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-gray-800">Leaderboard</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-gray-800">Tech tree</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main class="container mx-auto py-6 px-6 flex justify-center items-center">
+    <div class="bg-white rounded-lg shadow-md p-6 text-center max-w-lg">
+        <h2 class="text-2xl font-bold text-gray-800 mb-2">Galactic Gauntlet - Outlast the Pirate Invasion!</h2>
+        <p class="text-gray-600 mb-4 text-justify">Prepare for a high-stakes challenge in Galactic Gauntlet! As the commander of a spaceship, you must skillfully dodge perilous asteroid fields while defending against relentless waves of pirate attacks. Rely on your sharp reflexes and tactical prowess to outwit the pirates and evade the asteroids. Enhance your ship, acquire powerful weapons, and collect resources to ensure your survival. Can you withstand the pirate invasion and triumph in Galactic Gauntlet? Take on the challenge and prove your mettle!</p>
+        <a href="game.html" class="btn btn-primary">Play Now</a>
+    </div>
+</main>
+<footer class="bg-gray-800 text-white py-4">
+    <div class="container mx-auto px-6 flex justify-between items-center">
+        <p class="text-sm">&copy; 2023 Space Odyssey: A New Hope. All rights reserved.</p>
+    </div>
+</footer>
 </body>
 </html>

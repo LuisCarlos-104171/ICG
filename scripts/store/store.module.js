@@ -1,8 +1,11 @@
+import Storage from "../storage/storage.module.js";
+
+
 export default class Store {
     static state = {
         score: 0,
         level: 0,
-        cash: 10,
+        cash: Storage.currentState.cash,
         upgrades: {
             health: 1,
             damage: 1,

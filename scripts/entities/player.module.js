@@ -8,6 +8,7 @@ import Window from "../window.module.js";
 import Store from "../store/store.module.js";
 import Asteroid from "../primitives/asteroid.module.js";
 import StoreUI from "../store/storeUI.module.js";
+import Storage from "../storage/storage.module.js";
 
 
 export default class Player extends Input {
@@ -185,6 +186,7 @@ export default class Player extends Input {
         this.deathScreen.style.display = "flex";
         StoreUI.close();
         this.dead = true;
+        Storage.serialize();
     }
 
     update(event, data) {
