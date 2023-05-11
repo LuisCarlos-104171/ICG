@@ -5,7 +5,10 @@ export default class Storage {
 
     static serialize() {
         this.currentState = {
-            runHistory: [Store.score, ...this.currentState.runHistory],
+            runHistory: [{
+                score: Store.score,
+                ts: Date.now(),
+            }, ...this.currentState.runHistory],
             highestScore: Math.max(Store.score, this.currentState.highestScore ?? 0),
             cash: Store.cash,
         }

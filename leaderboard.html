@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+
+    <link href="https://cdn.jsdelivr.net/npm/daisyui@2.51.6/dist/full.css" rel="stylesheet" type="text/css" />
+    <script src="https://cdn.tailwindcss.com"></script>
+
+    <script src="scripts/leaderboard.js"></script>
+</head>
+<body class="bg-gray-100 min-h-screen">
+<header class="bg-white shadow-lg">
+    <div class="container mx-auto py-4 px-6 flex justify-between items-center">
+        <h1 class="text-2xl font-bold text-gray-800">Space Odyssey: A New Hope</h1>
+        <nav>
+            <ul class="flex space-x-4">
+                <li><a href="index.html" class="text-gray-600 hover:text-gray-800">Home</a></li>
+                <li><a href="leaderboard.html" class="text-gray-600 hover:text-gray-800">Leaderboard</a></li>
+                <li><a href="#" class="text-gray-600 hover:text-gray-800">Tech tree</a></li>
+            </ul>
+        </nav>
+    </div>
+</header>
+<main class="p-10">
+    <div class="grid grid-cols-2 gap-x-5 pb-10">
+        <h1 class="text-black text-xl font-semibold text-right">high score</h1>
+        <p class="text-black self-end" id="highscore"></p>
+        <h1 class="text-black text-xl font-semibold text-right">cash</h1>
+        <p class="text-black self-end" id="cash"></p>
+    </div>
+
+    <table id="leaderboard" class="table w-full">
+        <tr class="text-white">
+            <td>Run</td>
+            <td>Score</td>
+            <td>Date</td>
+        </tr>
+    </table>
+</main>
+</body>
+</html>
